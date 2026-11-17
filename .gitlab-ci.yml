@@ -1,0 +1,186 @@
+# ============================================================================
+#  Pipeline CI/CD GitLab — Projet SA (site vitrine PHP / HTML / CSS / JS)
+#  Stages : install -> test -> build -> deploy
+#
+#  Prérequis côté dépôt :
+#   - composer.json avec autoload PSR-4 (ex: "App\\": "src/") et
+#     autoload-dev (ex: "Tests\\": "tests/")
+#   - phpunit.xml à la racine du projet
+#   - package.json avec un script "build" qui compile scss/ -> public/assets/css/
+#   - Variables CI/CD définies dans Settings > CI/CD > Variables :
+#       SSH_PRIVATE_KEY  -> clé privée SSH (type File de préférence, sinon masquée)
+#       SSH_USER         -> utilisateur SSH sur le serveur de prod
+#       DEPLOY_ADRESS    -> adresse/IP du serveur de prod
+#       DEPLOY_PATH      -> chemin absolu de destination sur le serveur
+#   - Remplacer <RUNNER_TAG> par le tag réel de votre runner auto-hébergé
+#     (fait manuellement, non géré par ce fichier)
+# ============================================================================
+
+stages:
+  - install
+  - test
+  - build
+  - deploy
+
+variables:
+  PHP_IMAGE: "php:8.5-cli"
+  NODE_IMAGE: "node:22-bookworm"
+  COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.cache/composer"
+  NPM_CACHE_DIR: "$CI_PROJECT_DIR/.cache/npm"
+  RSYNC_EXCLUDES: >-
+    --exclude=.env
+    --exclude=.git
+    --exclude=.gitlab-ci.yml
+    --exclude=node_modules
+    --exclude=scss
+    --exclude=tests
+    --exclude=.cache
+    --exclude=README.md
+
+default:
+  tags:
+    - pagelab
+  interruptible: true
+
+# ============================================================================
+# STAGE : install
+# ============================================================================
+
+composer:install:
+  stage: install
+  image: $PHP_IMAGE
+  before_script:
+    - apt-get update -yqq && apt-get install -yqq --no-install-recommends git unzip libzip-dev
+    - curl -sSLf https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -o /usr/local/bin/install-php-extensions
+    - chmod +x /usr/local/bin/install-php-extensions
+    - install-php-extensions zip pdo_mysql mbstring intl gd
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  script:
+    - composer --version
+    - composer install --no-interaction --prefer-dist
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: composer-full
+    paths:
+      - $COMPOSER_CACHE_DIR
+      - vendor/
+  artifacts:
+    name: "vendor-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - vendor/
+      - composer.lock
+    expire_in: 2 hours
+
+# ============================================================================
+# STAGE : test
+# ============================================================================
+
+phpunit:test:
+  stage: test
+  image: $PHP_IMAGE
+  needs:
+    - job: composer:install
+      artifacts: true
+  before_script:
+    - curl -sSLf https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -o /usr/local/bin/install-php-extensions
+    - chmod +x /usr/local/bin/install-php-extensions
+    - install-php-extensions zip pdo_mysql mbstring intl gd xdebug
+  script:
+    - test -f phpunit.xml || cp phpunit.xml.dist phpunit.xml
+    - vendor/bin/phpunit --configuration phpunit.xml --log-junit report-junit.xml
+  artifacts:
+    when: always
+    reports:
+      junit: report-junit.xml
+    paths:
+      - report-junit.xml
+    expire_in: 2 hours
+
+# ============================================================================
+# STAGE : build
+# ============================================================================
+
+# Compilation du SCSS via Node/npm
+scss:build:
+  stage: build
+  image: $NODE_IMAGE
+  script:
+    - npm ci --cache $NPM_CACHE_DIR
+    - npm run build:css
+  cache:
+    key:
+      files:
+        - package-lock.json
+      prefix: npm
+    paths:
+      - $NPM_CACHE_DIR
+      - node_modules/
+  artifacts:
+    name: "assets-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - public/assets/css/
+    expire_in: 2 hours
+
+# Réinstallation des dépendances PHP sans les paquets de dev (phpunit, etc.)
+# pour obtenir un vendor/ "propre" destiné au déploiement.
+composer:build_prod:
+  stage: build
+  image: $PHP_IMAGE
+  before_script:
+    - apt-get update -yqq && apt-get install -yqq --no-install-recommends git unzip libzip-dev
+    - curl -sSLf https://raw.githubusercontent.com/mlocati/docker-php-extension-installer/master/install-php-extensions -o /usr/local/bin/install-php-extensions
+    - chmod +x /usr/local/bin/install-php-extensions
+    - install-php-extensions zip pdo_mysql mbstring intl gd
+    - curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+  script:
+    - composer install --no-interaction --prefer-dist --no-dev --optimize-autoloader
+  cache:
+    key:
+      files:
+        - composer.lock
+      prefix: composer-prod
+    paths:
+      - $COMPOSER_CACHE_DIR
+  artifacts:
+    name: "vendor-prod-$CI_COMMIT_SHORT_SHA"
+    paths:
+      - vendor/
+    expire_in: 2 hours
+  rules:
+    # Inutile de construire le vendor de prod ailleurs que sur main,
+    # seule branche qui déclenche un déploiement.
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+# ============================================================================
+# STAGE : deploy — automatique, uniquement sur push vers "main"
+# ============================================================================
+
+deploy:prod:
+  stage: deploy
+  image: alpine:3.20
+  needs:
+    - job: composer:build_prod
+      artifacts: true
+    - job: scss:build
+      artifacts: true
+  before_script:
+    - apk add --no-cache rsync openssh-client
+    - mkdir -p ~/.ssh
+    - |
+      if [ -z "$SSH_PRIVATE_KEY" ]; then
+        echo "ERREUR : la variable SSH_PRIVATE_KEY est vide ou absente pour ce job."
+        echo "Vérifie : nom exact, scope d'environnement, et que la branche main est protégée si la variable est Protected."
+        exit 1
+      fi
+    - cp "$SSH_PRIVATE_KEY" ~/.ssh/id_deploy
+    - chmod 600 ~/.ssh/id_deploy
+    - 'ssh-keyscan -H "$DEPLOY_ADRESS" >> ~/.ssh/known_hosts || echo "AVERTISSEMENT : ssh-keyscan a echoue (voir message ci-dessus), on continue car StrictHostKeyChecking=no est utilise"'
+  script:
+    - rsync -rlz --delete $RSYNC_EXCLUDES -e "ssh -i ~/.ssh/id_deploy -o StrictHostKeyChecking=no" ./ "$SSH_USER@$DEPLOY_ADRESS:$DEPLOY_PATH/"
+  environment:
+    name: production
+    url: https://votre-domaine.example
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

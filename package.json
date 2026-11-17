@@ -1,0 +1,19 @@
+{
+  "name": "sa-agence-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Compilation SCSS pour le site vitrine SA",
+  "scripts": {
+    "build:css": "sass scss/style.scss public/assets/css/style.css --no-source-map --style=compressed",
+    "watch:css": "sass scss/style.scss public/assets/css/style.css --watch --no-source-map"
+  },
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0",
+    "sass": "^1.77.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

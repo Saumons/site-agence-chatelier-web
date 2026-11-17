@@ -1,0 +1,19 @@
+DirectoryIndex index.php
+
+# Empêche la navigation dans les dossiers
+Options -Indexes
+
+# Force HTTPS en production (décommenter si besoin)
+# RewriteEngine On
+# RewriteCond %{HTTPS} off
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+</IfModule>
+
+# Bloque l'accès direct à d'éventuels fichiers sensibles dans public/
+<FilesMatch "\.(env|log|md)$">
+    Require all denied
+</FilesMatch>
