@@ -53,7 +53,7 @@ final class ContactFormTest extends TestCase
             'name'    => 'Jean Dupont',
             'email'   => 'jean.dupont@example.com',
             'subject' => 'Demande de devis',
-            'message' => 'Trop court',
+            'message' => 'Test',
         ]);
 
         $this->assertFalse($form->isValid());
