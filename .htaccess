@@ -1,0 +1,52 @@
+# ──────────────────────────────────────────────────────────────────────────
+# .htaccess RACINE — à utiliser uniquement si votre hébergeur pointe le
+# document root sur la racine du projet (SA/) et non sur SA/public/.
+#
+# Il fait deux choses :
+#   1. Bloque l'accès direct aux dossiers/fichiers qui ne doivent jamais
+#      être servis publiquement (src/, templates/, scss/, vendor/, .env, ...).
+#   2. Réécrit en interne toute requête restante vers le dossier public/
+#      (l'URL affichée au visiteur ne change pas : domaine.fr/contact.php
+#      sert bien public/contact.php, domaine.fr/assets/css/style.css sert
+#      bien public/assets/css/style.css, etc.)
+# ──────────────────────────────────────────────────────────────────────────
+
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # --- 1. Dossiers/fichiers jamais accessibles publiquement -------------
+    RewriteRule ^(src|templates|scss|vendor|tests|node_modules)(/|$) - [F,L]
+    RewriteRule ^\.env(\.example)?$ - [F,L]
+    RewriteRule ^(composer\.(json|lock)|package(-lock)?\.json|phpunit\.xml(\.dist)?|\.gitignore|README\.md)$ - [F,L]
+
+    # --- 2. Ne touche pas aux requêtes déjà adressées à /public/ ----------
+    RewriteCond %{REQUEST_URI} ^/public/
+    RewriteRule ^ - [L]
+
+    # --- 3. Tout le reste est servi depuis public/ -------------------------
+    # Si le fichier/dossier demandé existe réellement dans public/, on
+    # l'y envoie (pages PHP, CSS, JS, images...).
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -f [OR]
+    RewriteCond %{DOCUMENT_ROOT}/public/$1 -d
+    RewriteRule ^(.*)$ public/$1 [L]
+
+    # Sinon (ex: la racine "/"), on tombe sur le front controller public/
+    # qui applique lui-même son propre DirectoryIndex (index.php).
+    RewriteRule ^$ public/index.php [L]
+    RewriteRule ^(.*)$ public/index.php [L]
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # Si mod_rewrite n'est pas activé chez votre hébergeur, demandez son
+    # activation : sans lui, impossible de faire pointer "/" vers public/
+    # tout en servant correctement les fichiers statiques (CSS/JS/images).
+</IfModule>
+
+# Sécurité supplémentaire (redondante avec la règle [F] ci-dessus, mais
+# garde une protection même si mod_rewrite venait à être désactivé).
+<FilesMatch "\.(env|log|md|lock)$">
+    Require all denied
+</FilesMatch>
