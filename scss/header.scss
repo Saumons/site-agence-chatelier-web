@@ -1,0 +1,60 @@
+header {
+    font-size: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    border-bottom: solid;
+    background-color: #F2EBEB;
+
+}
+
+.header-modeNuit {
+    background-color: red;
+}
+
+.header-menu {
+    display: flex;
+    flex-direction: row;
+}
+
+
+@media (min-width: 700px) {
+
+    /* CSS styles for screens 768px or wider */
+    .header-logo {
+
+        width: 8%;
+        height: 8%;
+    }
+
+    .header-Titre-Chatelier {
+        width: 60%;
+        height: 60%;
+
+    }
+
+    .header-titre-entreprise {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .chat-elier {
+        font-weight: 800;
+        font-size: 16.9333px;
+        font-family: 'Montserrat', sans-serif;
+        stroke-width: 0.265px;
+        paint-order: markers fill stroke;
+        fill: #000000;
+    }
+
+    .web {
+        font-size: 16.2278px;
+        font-family: 'Sora', sans-serif;
+        stroke-width: 0.265px;
+        paint-order: markers fill stroke;
+        fill: #000000;
+        
+    }
+
+
+
+}

@@ -99,7 +99,11 @@
             </g>
         </svg>
         
-        <img src="assets/images/Titre_Chatelier_Web.svg" alt="Titre Chatelier">
+        <div class="header-titre-entreprise">
+            <p class="chat-elier">CHAT'ELIER</p>
+            <p class="web">WEB</p>
+        </div>
+       
         
 
         <nav class="header-menu">
