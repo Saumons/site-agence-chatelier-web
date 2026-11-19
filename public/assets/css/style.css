@@ -49,21 +49,23 @@ header {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
+    width: 15%;
+    height: 15%;
     padding: 0;
-    background: transparent;
+    background: block;
     border: none;
     flex-shrink: 0;
+    background-color: #000000;
+    margin: 0;
   }
   .header-menu-burger .ham {
-    width: 32px;
-    height: 32px;
+    width: 90%;
+    height: 90%;
     display: block;
   }
   .header-menu-burger .line {
     fill: none;
-    stroke: #000000;
+    stroke: #ffffff;
     stroke-width: 5.5;
     stroke-linecap: round;
   }
