@@ -2,4 +2,5 @@
 /node_modules/
 .env
 .DS_Store
-public/assets/css/*.map
+public/assets/css/*.css
+
