@@ -4,6 +4,7 @@ header {
   flex-direction: row;
   border-bottom: solid;
   background-color: #F2EBEB;
+  justify-content: space-between;
 }
 
 .header-modeNuit {
@@ -18,30 +19,58 @@ header {
 @media (min-width: 700px) {
   /* CSS styles for screens 768px or wider */
   .header-logo {
-    width: 8%;
-    height: 8%;
-  }
-  .header-Titre-Chatelier {
-    width: 60%;
-    height: 60%;
+    width: 10%;
+    height: 10%;
   }
   .header-titre-entreprise {
     display: flex;
     flex-direction: column;
+    row-gap: 0%;
+  }
+  .header-titre-entreprise p {
+    margin: 0;
   }
   .chat-elier {
     font-weight: 800;
-    font-size: 16.9333px;
+    font-size: 150%;
     font-family: "Montserrat", sans-serif;
     stroke-width: 0.265px;
     paint-order: markers fill stroke;
     fill: #000000;
   }
   .web {
-    font-size: 16.2278px;
+    font-size: 150%;
     font-family: "Sora", sans-serif;
     stroke-width: 0.265px;
     paint-order: markers fill stroke;
     fill: #000000;
+  }
+  .header-menu-burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    flex-shrink: 0;
+  }
+  .header-menu-burger .ham {
+    width: 32px;
+    height: 32px;
+    display: block;
+  }
+  .header-menu-burger .line {
+    fill: none;
+    stroke: #000000;
+    stroke-width: 5.5;
+    stroke-linecap: round;
+  }
+  .header-menu-burger .ham1 .top {
+    stroke-dasharray: 40 139;
+  }
+  .header-menu-burger .ham1 .bottom {
+    stroke-dasharray: 40 180;
   }
 }
