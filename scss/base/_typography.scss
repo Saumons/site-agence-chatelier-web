@@ -1,0 +1,10 @@
+@use '../abstracts' as *;
+
+body {
+  @include font($font-sora, 400);
+  background: $bg-jour;
+}
+
+h1, h2, h3 {
+  @include font($font-montserrat, 800);
+}
