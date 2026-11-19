@@ -1,1 +1,243 @@
-html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:"";content:none}table{border-collapse:collapse;border-spacing:0}header{font-size:1.5rem;display:flex;flex-direction:row;border-bottom:solid;background-color:#f2ebeb;justify-content:space-between}.header-modeNuit{background-color:red}.header-menu{display:flex;flex-direction:row}@media(min-width: 700px){.header-logo{width:10%;height:10%}.header-titre-entreprise{display:flex;flex-direction:column;row-gap:0%}.header-titre-entreprise p{margin:0}.chat-elier{font-weight:800;font-size:150%;font-family:"Montserrat",sans-serif;stroke-width:.265px;paint-order:markers fill stroke;fill:#000}.web{font-size:150%;font-family:"Sora",sans-serif;stroke-width:.265px;paint-order:markers fill stroke;fill:#000}.header-menu-burger{display:inline-flex;align-items:center;justify-content:center;width:15%;height:15%;padding:0;background:block;border:none;flex-shrink:0;background-color:#000;margin:0}.header-menu-burger .ham{width:90%;height:90%;display:block}.header-menu-burger .line{fill:none;stroke:#fff;stroke-width:5.5;stroke-linecap:round}.header-menu-burger .ham1 .top{stroke-dasharray:40 139}.header-menu-burger .ham1 .bottom{stroke-dasharray:40 180}}.footer{background:hsla(0,21%,94%,.14)}body{font-family:"Sora",sans-serif;font-weight:400;background:hsl(0,21%,94%)}h1,h2,h3{font-family:"Montserrat",sans-serif;font-weight:800}main .main__background{position:fixed;inset:0;z-index:-1;overflow:hidden}main .main__background img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}main .main__content{width:calc(100% - 20px);margin:0 auto;padding:30px 20px 45px;display:flex;flex-direction:column;align-items:center;background-color:#f2ebeb}main .main__title{width:100%;font-size:2.25rem;text-align:center;line-height:1.1}main .main__article{width:100%;align-self:flex-start;margin-bottom:4rem}main .main__article:last-child{margin-bottom:0}main .main__subtitle{margin-bottom:5px;font-size:1.5rem;font-weight:700;line-height:1.2}main .main__paragraph{font-size:1rem;line-height:1.5}@media screen and (min-width: 601px){main .main__content{width:calc(100% - 32px);padding:35px 25px}main .main__title{margin-bottom:55px;font-size:clamp(2.5rem,5vw,5rem)}main .main__article{width:100%;margin-bottom:55px}main .main__subtitle{font-size:clamp(1.4rem,2.5vw,2rem)}main .main__paragraph{font-size:1.05rem;line-height:1.35;text-align:justify}}@media screen and (min-width: 901px){main .main__content{width:min(875px,100% - 48px);min-height:calc(100vh - 100px);margin:40px auto 60px;padding:42px 30px 80px}main .main__title{margin-bottom:75px}main .main__article{margin-bottom:75px}}main .main__background{position:fixed;inset:0;z-index:-1;overflow:hidden}main .main__background img{display:block;width:100%;height:100%;object-fit:cover;object-position:center}main .main__content{width:calc(100% - 20px);margin:0 auto;padding:30px 20px 45px;display:flex;flex-direction:column;align-items:center;background-color:#f2ebeb}main .main__title{width:100%;font-size:2.25rem;text-align:left;line-height:1.1}main .main__content>.main__subtitle{width:100%;text-align:left}main .main__article{width:100%;align-self:flex-start;margin-bottom:4rem}main .main__article:last-child{margin-bottom:0}main .main__subtitle{margin-bottom:5px;font-size:1.5rem;font-weight:700;line-height:1.2}main .main__paragraph{font-size:1rem;line-height:1.5}@media screen and (min-width: 601px){main .main__content{width:calc(100% - 32px);padding:35px 25px}main .main__title{margin-bottom:55px;font-size:clamp(2.5rem,5vw,5rem)}main .main__article{width:100%;margin-bottom:55px}main .main__subtitle{font-size:clamp(1.4rem,2.5vw,2rem)}main .main__paragraph{font-size:1.05rem;line-height:1.35;text-align:justify}}@media screen and (min-width: 901px){main .main__content{width:min(875px,100% - 48px);min-height:calc(100vh - 100px);margin:40px auto 60px;padding:42px 30px 80px}main .main__title{margin-bottom:75px}main .main__article{margin-bottom:75px}}
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+header {
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+  border-bottom: solid;
+  background-color: #F2EBEB;
+  justify-content: space-between;
+}
+
+.header-modeNuit {
+  background-color: red;
+}
+
+.header-menu {
+  display: flex;
+  flex-direction: row;
+}
+
+@media (min-width: 700px) {
+  /* CSS styles for screens 768px or wider */
+  .header-logo {
+    width: 10%;
+    height: 10%;
+  }
+  .header-titre-entreprise {
+    display: flex;
+    flex-direction: column;
+    row-gap: 0%;
+  }
+  .header-titre-entreprise p {
+    margin: 0;
+  }
+  .chat-elier {
+    font-weight: 800;
+    font-size: 150%;
+    font-family: "Montserrat", sans-serif;
+    stroke-width: 0.265px;
+    paint-order: markers fill stroke;
+    fill: #000000;
+  }
+  .web {
+    font-size: 150%;
+    font-family: "Sora", sans-serif;
+    stroke-width: 0.265px;
+    paint-order: markers fill stroke;
+    fill: #000000;
+  }
+  .header-menu-burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 15%;
+    height: 15%;
+    padding: 0;
+    background: block;
+    border: none;
+    flex-shrink: 0;
+    background-color: #000000;
+    margin: 0;
+  }
+  .header-menu-burger .ham {
+    width: 90%;
+    height: 90%;
+    display: block;
+  }
+  .header-menu-burger .line {
+    fill: none;
+    stroke: #ffffff;
+    stroke-width: 5.5;
+    stroke-linecap: round;
+  }
+  .header-menu-burger .ham1 .top {
+    stroke-dasharray: 40 139;
+  }
+  .header-menu-burger .ham1 .bottom {
+    stroke-dasharray: 40 180;
+  }
+}
+.footer {
+  background: hsla(0, 21%, 94%, 0.14);
+  color: hsl(258, 59%, 8%);
+  padding: 2rem 1rem 1rem;
+}
+.footer__intro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.footer__company {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+.footer__divider {
+  border-top: 2px solid hsl(258, 59%, 8%);
+  margin: 1.5rem -1rem;
+}
+.footer__slogan {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+.footer__slogan-highlight {
+  display: block;
+  margin-top: 0.75rem;
+  font-size: 1rem;
+}
+.footer__quote-link {
+  display: inline-block;
+  padding: 1rem 1.75rem;
+  border-radius: 999px;
+  background: hsl(0, 0%, 12%);
+  color: hsl(0, 21%, 94%);
+  font-size: 1.25rem;
+  text-decoration: none;
+}
+.footer__content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.footer__brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.footer__logo {
+  width: 3rem;
+  flex-shrink: 0;
+}
+.footer__brand-name {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  font-size: 1.75rem;
+}
+.footer__service-description {
+  margin: 1rem 0;
+  font-size: 1.125rem;
+  line-height: 1.4;
+}
+.footer__socials {
+  width: 100%;
+}
+.footer__social-list {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+.footer__social-link {
+  display: block;
+}
+.footer__social-icon {
+  width: 3rem;
+  height: 3rem;
+}
+.footer__section-title {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+.footer__list, .footer__contact-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  font-size: 1.125rem;
+}
+.footer__legal {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  text-align: center;
+}
+.footer__copyright {
+  font-size: 0.95rem;
+}
+.footer__legal-links {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem 1rem;
+  font-size: 1.125rem;
+}
+
+body {
+  font-family: "Sora", sans-serif;
+  font-weight: 400;
+  background: hsl(0, 21%, 94%);
+}
+
+h1, h2, h3 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 800;
+}

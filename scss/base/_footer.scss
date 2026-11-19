@@ -1,5 +1,126 @@
 @use '../abstracts' as *;
 
-.footer{
+.footer {
   background: $bg-jour-soft;
+  color: $color-dark;
+  padding: 2rem 1rem 1rem;
+
+  &__intro{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__company{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  &__divider {
+    border-top: 2px solid $color-dark;
+    margin: 1.5rem -1rem;
+  }
+
+  &__slogan {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  &__slogan-highlight {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 1rem;
+    // color: $color-accent; TODO : trouver couleur bien
+  }
+
+  &__quote-link {
+    display: inline-block;
+    padding: 1rem 1.75rem;
+    border-radius: 999px;
+    background: $color-button;
+    color: $color-light;
+    font-size: 1.25rem;
+    text-decoration: none;
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  &__logo {
+    width: 3rem;
+    flex-shrink: 0;
+  }
+
+  &__brand-name {
+    @include font($font-montserrat, 800);
+    font-size: 1.75rem;
+  }
+
+  &__service-description {
+    margin: 1rem 0;
+    font-size: 1.125rem;
+    line-height: 1.4;
+  }
+
+  &__socials {
+    width: 100%;
+  }
+
+  &__social-list {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+
+  &__social-link {
+    display: block;
+  }
+
+  &__social-icon {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  &__section-title {
+    @include font($font-montserrat, 800);
+    margin-bottom: 1rem;
+    font-size: 2rem;
+  }
+
+  &__list,
+  &__contact-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    font-size: 1.125rem;
+  }
+
+  &__legal {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: center;
+  }
+
+  &__copyright {
+    font-size: 0.95rem;
+  }
+
+  &__legal-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem 1rem;
+    font-size: 1.125rem;
+  }
 }
