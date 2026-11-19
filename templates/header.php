@@ -10,7 +10,7 @@
      <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&family=Montserrat:wght@300;800&family=Sora:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-
+<!--
 <body>
     <header class="header">
 
@@ -27,13 +27,13 @@
         </div>
 
 
-        <!--
+
         <nav class="header-menu">
             <a href="" class="menu-attribut">Nos réalisations</a>
             <a href="" class="menu-attribut">Nos services</a>
             <a href="" class="menu-attribut">Nos engagement</a>
         </nav>
-        -->
+
 
         <button class="header-modeNuit"></button>
 
@@ -49,3 +49,4 @@
 
 
     </header>
+-->
