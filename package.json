@@ -15,5 +15,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
+  },
+  "dependencies": {
+    "commitizen": "^4.3.2",
+    "composer": "^4.1.0"
   }
 }
