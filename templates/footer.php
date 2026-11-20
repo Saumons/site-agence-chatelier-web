@@ -84,10 +84,10 @@
             </h2>
 
             <ul class="footer__list">
-                <li class="footer__list-item">Accueil</li>
-                <li class="footer__list-item">Engagement</li>
-                <li class="footer__list-item">Réalisations</li>
-                <li class="footer__list-item">Services</li>
+                <li class="footer__list-item"><a class="footer__list-link" href="#">Accueil</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="#">Engagement</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="#">Réalisations</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="#">Services</a></li>
             </ul>
         </section>
 
@@ -97,7 +97,7 @@
             </h2>
 
             <ul class="footer__contact-list">
-                <li class="footer__contact-item">chatelier-web@outlook.fr</li>
+                <li class="footer__contact-item"><a href="mailto:chatelier-web@outlook.fr">chatelier-web@outlook.fr</a></li>
                 <li class="footer__contact-item">adresse</li>
                 <li class="footer__contact-item">17000, La Rochelle</li>
             </ul>
@@ -115,10 +115,10 @@
         </p>
 
         <ul class="footer__legal-links">
-            <li class="footer__legal-item">Mentions légales</li>
-            <li class="footer__legal-item">Cookies</li>
-            <li class="footer__legal-item">CGU</li>
-            <li class="footer__legal-item">Politique de confidentialité</li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="#">Mentions légales</a></li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="#">Cookies</a></li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="#">CGU</a></li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="#">Politique de confidentialité</a></li>
         </ul>
 
     </section>
