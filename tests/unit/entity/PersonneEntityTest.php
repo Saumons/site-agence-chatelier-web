@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace entity;
+namespace Tests\unit\entity;
 
 use App\BDD\entity\PersonneEntity;
 use InvalidArgumentException;
@@ -32,7 +32,8 @@ final class PersonneEntityTest extends TestCase
         self::assertSame('jean.dupont@example.com', $personne->getMail());
         self::assertSame('Dupont', $personne->getNom());
         self::assertSame('Jean', $personne->getPrenom());
-        self::assertSame('06 12 34 56 78', $personne->getTel());
+        self::assertSame('06 12 34 56 78', $personne->getFormattedTel());
+        self::assertSame('+33612345678', $personne->getTel());
         self::assertFalse($personne->isEstMorale());
     }
 
@@ -130,21 +131,24 @@ final class PersonneEntityTest extends TestCase
     {
         $personne = new PersonneEntity(mail: 'jean@example.com', nom: 'Dupont', prenom: null, tel: '0612345678', estMorale: false);
 
-        self::assertSame('06 12 34 56 78', $personne->getTel());
+        self::assertSame('+33612345678', $personne->getTel());
+        self::assertSame('06 12 34 56 78', $personne->getFormattedTel());
     }
 
     public function testConstructorAcceptsPhoneNumberAlreadyInPlus33Format(): void
     {
         $personne = new PersonneEntity(mail: 'jean@example.com', nom: 'Dupont', prenom: null, tel: '+33612345678', estMorale: false);
 
-        self::assertSame('06 12 34 56 78', $personne->getTel());
+        self::assertSame('06 12 34 56 78', $personne->getFormattedTel());
+        self::assertSame('+33612345678', $personne->getTel());
     }
 
     public function testConstructorStripsSpacesFromPhoneNumberBeforeValidating(): void
     {
         $personne = new PersonneEntity(mail: 'jean@example.com', nom: 'Dupont', prenom: null, tel: '06 12 34 56 78', estMorale: false);
 
-        self::assertSame('06 12 34 56 78', $personne->getTel());
+        self::assertSame('06 12 34 56 78', $personne->getFormattedTel());
+        self::assertSame('+33612345678', $personne->getTel());
     }
 
     public function testConstructorThrowsWhenPhoneNumberHasInvalidFormat(): void
@@ -231,7 +235,8 @@ final class PersonneEntityTest extends TestCase
 
         $personne->setTel('07 98 76 54 32');
 
-        self::assertSame('07 98 76 54 32', $personne->getTel());
+        self::assertSame('07 98 76 54 32', $personne->getFormattedTel());
+        self::assertSame('+33798765432', $personne->getTel());
     }
 
     public function testSetTelThrowsWhenInvalid(): void

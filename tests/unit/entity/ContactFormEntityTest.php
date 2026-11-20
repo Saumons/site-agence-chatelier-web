@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace entity;
+namespace Tests\unit\entity;
 
 use App\BDD\entity\ContactFormEntity;
 use App\BDD\entity\PersonneEntity;

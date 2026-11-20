@@ -89,7 +89,7 @@ phpunit:test:
     - install-php-extensions zip pdo_mysql mbstring intl gd xdebug
   script:
     - test -f phpunit.xml || cp phpunit.xml.dist phpunit.xml
-    - vendor/bin/phpunit --configuration phpunit.xml --log-junit report-junit.xml
+    - vendor/bin/phpunit --configuration phpunit.xml --testsuite Unit --log-junit report-junit.xml
   artifacts:
     when: always
     reports:

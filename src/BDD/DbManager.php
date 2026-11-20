@@ -8,6 +8,7 @@ use App\BDD\entity\DevisFormEntity;
 use App\BDD\entity\PersonneEntity;
 use App\BDD\entity\OptionEntity;
 use App\BDD\exception\DatabaseReadException;
+use App\BDD\exception\DatabaseWriteException;
 use App\enums\DevisFormStatutEnum;
 use App\enums\DevisFormTypeEnum;
 use PDO;
@@ -42,7 +43,7 @@ final class DbManager
          * @return ContactFormEntity[] liste des résultats du formulaire de contact
          *  (ContactFormEntity)
          */
-        public function getAllContactForm(): array
+        public function findAllContactForm(): array
         {
             try {
                 $sql = "SELECT *
@@ -78,7 +79,7 @@ final class DbManager
 
                 error_log(
                     sprintf(
-                        "[%s] Erreur lecture CONTACT_FORM (getAll) : %s",
+                        "[%s] Erreur lecture CONTACT_FORM (findAll) : %s",
                         date(DbManager::DATE_FORMAT),
                         $e->getMessage()
                     )
@@ -98,7 +99,7 @@ final class DbManager
          * @param int $idContact identifiant du résultat du formulaire de contact
          * @return ContactFormEntity|null résultat du formulaire de contact ou null si pas trouvé
          */
-        public function getContactFormById(int $idContact): ?ContactFormEntity
+        public function findContactFormById(int $idContact): ?ContactFormEntity
         {
             try {
                 $sql = "SELECT *
@@ -114,7 +115,7 @@ final class DbManager
 
                 $contact = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if (!$contact) {
+                if (empty($contact)) {
                     return null;
                 }
 
@@ -158,7 +159,7 @@ final class DbManager
          * table DEVIS_FORM
          * @return DevisFormEntity[] liste des devis (DevisFormEntity)
          */
-        public function getAllDevisForm() : array
+        public function findAllDevisForm() : array
         {
             try {
                 $sql = "SELECT df.*,
@@ -187,9 +188,9 @@ final class DbManager
                         $enumType = DevisFormTypeEnum::tryFrom($ligne['type']);
 
                         if ($enumStatut === null) {
-                            throw new DatabaseReadException(
+                            throw new DatabaseReadException( sprintf (
                                 "Le statut {$ligne['statut']} est invalide. pour le devis id:{$idDevis}."
-                            );
+                            ));
                         } elseif ($enumType === null) {
                             throw new DatabaseReadException(
                                 "Le type {$ligne['type']} est invalide. pour le devis id:{$idDevis}."
@@ -231,7 +232,7 @@ final class DbManager
 
                 error_log(
                     sprintf(
-                        "[%s] Erreur lecture DEVIS_FORM (getAll) : %s",
+                        "[%s] Erreur lecture DEVIS_FORM (findAll) : %s",
                         date(DbManager::DATE_FORMAT),
                         $e->getMessage()
                     )
@@ -251,7 +252,7 @@ final class DbManager
          * @param int $idDevis identifiant du devis
          * @return DevisFormEntity|null Devis ou null si pas trouvé
          */
-        public function getDevisFormById(int $idDevis): ?DevisFormEntity
+        public function findDevisFormById(int $idDevis): ?DevisFormEntity
         {
             try {
                 $sql = "SELECT df.*,
@@ -358,7 +359,7 @@ final class DbManager
          * table OPTION
          * @return OptionEntity[] liste des options (OptionEntity)
          */
-        public function getAllOption() : array
+        public function findAllOption() : array
         {
             try {
                 $sql = "SELECT * FROM `OPTION`";
@@ -379,7 +380,7 @@ final class DbManager
 
                 error_log(
                     sprintf(
-                        "[%s] Erreur lecture OPTION (getAll) : %s",
+                        "[%s] Erreur lecture OPTION (findAll) : %s",
                         date(DbManager::DATE_FORMAT),
                         $e->getMessage()
                     )
@@ -399,7 +400,7 @@ final class DbManager
          * @param int $idOption identifiant de l'option
          * @return OptionEntity|null Option ou null si pas trouvé
          */
-        public function getOptionById(int $idOption) : ?OptionEntity
+        public function findOptionById(int $idOption) : ?OptionEntity
         {
             try {
                 $sql = "SELECT * FROM `OPTION`
@@ -444,7 +445,7 @@ final class DbManager
          * table PERSONNE
          * @return PersonneEntity[] liste des personnes (PersonneEntity)
          */
-        public function getAllPersonne() : array
+        public function findAllPersonne() : array
         {
             try {
                 $sql = "SELECT * FROM `PERSONNE`";
@@ -467,7 +468,7 @@ final class DbManager
 
                 error_log(
                     sprintf(
-                        "[%s] Erreur lecture PERSONNE (getAll) : %s",
+                        "[%s] Erreur lecture PERSONNE (findAll) : %s",
                         date(DbManager::DATE_FORMAT),
                         $e->getMessage()
                     )
@@ -487,7 +488,7 @@ final class DbManager
          * @param string $mailPersonne identifiant de la personne
          * @return PersonneEntity|null Personne ou null si pas trouvé
          */
-        public function getPersonneByEmail(string $mailPersonne) : ?PersonneEntity
+        public function findPersonneByEmail(string $mailPersonne) : ?PersonneEntity
         {
             try {
                 $sql = "SELECT * FROM `PERSONNE`
@@ -529,15 +530,262 @@ final class DbManager
 
         #endregion
 
-        #region INSERT
+    #region INSERT
+
+        #region CONTACT_FORM
+
+        /**
+         * Insère un formulaire de contact.
+         *
+         * @param ContactFormEntity $contactForm formulaire de contact
+         * @throws DatabaseWriteException En cas d'erreur d'écriture en base.
+         */
+        public function insertContactForm(ContactFormEntity $contactForm): void
+        {
+            try {
+                // Une erreur annule les insertions associées.
+                $this->connexion->beginTransaction();
+
+                // Crée la personne si elle n'existe pas encore.
+                $personne = $contactForm->getPersonne();
+                $email = $personne->getMail();
+                if ($this->findPersonneByEmail($email) === null) {
+                    $this->insertPersonne($personne);
+                }
+
+                $sql = "INSERT INTO `CONTACT_FORM` (objet, message, emailPersonne)
+                            VALUES (:objet, :message, :emailPersonne)";
+                $this->connexion
+                    ->prepare($sql)
+                    ->execute([
+                    'objet' => $contactForm->getObjet(),
+                    'message' => $contactForm->getMessage(),
+                    'emailPersonne' => $email,
+                ]);
+                $this->connexion->commit();
+
+            } catch (PDOException $e) {
+
+                if ($this->connexion->inTransaction()) {
+                    $this->connexion->rollBack();
+                }
+                error_log(
+                    sprintf(
+                        "[%s] Erreur écriture CONTACT_FORM : %s",
+                        date(DbManager::DATE_FORMAT),
+                        $e->getMessage()
+                    )
+                );
+
+                throw new DatabaseWriteException(
+                    "Erreur impossible d'insérer un formulaire de contact",
+                    0,
+                    $e
+                );
+            }
+        }
 
         #endregion
 
-        #region UPDATE
+        #region DEVIS_FORM
+
+        /**
+         * Insert un formulaire de devis
+         *
+         * @param DevisFormEntity $devisForm formulaire de devis à insérer
+         * @throws DatabaseWriteException En cas d'erreur d'écriture en base.
+         */
+        public function insertDevisForm(DevisFormEntity $devisForm): void
+        {
+            try {
+                // Permet de rollback l'insert de personne si l'insert de
+                // contactForm génère une erreur
+                $this->connexion->beginTransaction();
+
+                // Crée la personne si elle n'existe pas encore.
+                $personne = $devisForm->getPersonne();
+                $email = $personne->getMail();
+                if ($this->findPersonneByEmail($email) === null) {
+                    $this->insertPersonne($personne);
+                }
+
+                $sql = "INSERT INTO `DEVIS_FORM` (type, nomProjet, descriptionProjet,
+                                        informationComplementaire, statut, emailPersonne)
+                                    VALUES (:type,:nomProjet,:descriptionProjet,:informationComplementaire,
+                                            :statut, :emailPersonne);";
+                $this->connexion
+                    ->prepare($sql)
+                    ->execute([
+                        'type' => $devisForm->getType()->value,
+                        'nomProjet' => $devisForm->getNomProjet(),                              // nullable
+                        'descriptionProjet' => $devisForm->getDescriptionProjet(),
+                        'informationComplementaire' => $devisForm->getInfoComplementaire(),     // nullable
+                        'statut' => $devisForm->getStatut()->value,
+                        'emailPersonne' => $email,
+                    ]);
+
+                $idDevis = (int)$this->connexion->lastInsertId();
+                foreach ($devisForm->getOptions() as $option) {
+                    $this->insertDevisOption($idDevis,$option);
+                }
+
+                $this->connexion->commit();
+
+            } catch (PDOException $e) {
+                if ($this->connexion->inTransaction()) {
+                    $this->connexion->rollBack();
+                }
+                error_log(
+                    sprintf(
+                        "[%s] Erreur écriture DEVIS_FORM : %s",
+                        date(DbManager::DATE_FORMAT),
+                        $e->getMessage()
+                    )
+                );
+
+                throw new DatabaseWriteException(
+                    "Erreur impossible d'insérer le formulaire de devis",
+                    0,
+                    $e
+                );
+            }
+        }
 
         #endregion
 
-        #region DELETE
+        #region DEVIS_OPTION
+
+        /**
+         * Insert le lien entre un devis et une option
+         *
+         * @param int $devisFormID id du devis
+         * @param OptionEntity $option option
+         * @throws DatabaseWriteException En cas d'erreur d'écriture en base.
+         */
+        public function insertDevisOption(int $devisFormID, OptionEntity $option): void
+        {
+            try {
+
+                $sql = "INSERT INTO `DEVIS_OPTION` (idDevis, idOption, compteur)
+                                        VALUES (:idDevis,:idOption,:compteur);";
+                $this->connexion
+                    ->prepare($sql)
+                    ->execute([
+                        'idDevis' => $devisFormID,
+                        'idOption' => $option->getIdOption(),
+                        'compteur' => $option->getNbAttribut(),     // nullable
+                    ]);
+
+            } catch (PDOException $e) {
+
+                error_log(
+                    sprintf(
+                        "[%s] Erreur écriture DEVIS_OPTION (idDevis:{$devisFormID} / idOption{$option->getIdOption()}) : %s",
+                        date(DbManager::DATE_FORMAT),
+                        $e->getMessage()
+                    )
+                );
+
+                throw new DatabaseWriteException(
+                    "Erreur impossible d'insérer le lien entre devis et option",
+                    0,
+                    $e
+                );
+            }
+        }
+
+        #endregion
+
+        #region OPTION
+
+        /**
+         * Insert une option
+         *
+         * @param OptionEntity $option option à insérer
+         * @throws DatabaseWriteException En cas d'erreur d'écriture en base.
+         */
+        public function insertOption(OptionEntity $option): void
+        {
+            try {
+                $sql = "INSERT INTO `OPTION` (nom,nbJourHomme)
+                                    VALUES (:nom,:nbJourHomme);";
+                $this->connexion
+                    ->prepare($sql)
+                    ->execute([
+                        'nom' => $option->getNom(),
+                        'nbJourHomme' => $option->getNbJourHomme(),
+                    ]);
+
+            } catch (PDOException $e) {
+
+                error_log(
+                    sprintf(
+                        "[%s] Erreur écriture OPTION (option:{$option->getNom()}) : %s",
+                        date(DbManager::DATE_FORMAT),
+                        $e->getMessage()
+                    )
+                );
+
+                throw new DatabaseWriteException(
+                    "Erreur impossible d'insérer l'option",
+                    0,
+                    $e
+                );
+            }
+        }
+
+        #endregion
+
+        #region PERSONNE
+
+        /**
+         * Insert une personne
+         *
+         * @param PersonneEntity $personne personne à insérer
+         * @throws DatabaseWriteException En cas d'erreur d'écriture en base.
+         */
+        public function insertPersonne(PersonneEntity $personne): void
+        {
+            try {
+                $sql = "INSERT INTO `PERSONNE` (email,nom,prenom,tel,estMorale)
+                                VALUES (:email,:nom,:prenom,:tel,:estMorale);";
+                $this->connexion
+                    ->prepare($sql)
+                    ->execute([
+                    'email' => $personne->getMail(),
+                    'nom' => $personne->getNom(),
+                    'prenom' => $personne->getPrenom(),         // nullable
+                    'tel' => $personne->getTel(),               // nullable
+                    'estMorale' => $personne->isEstMorale(),
+                ]);
+
+            } catch (PDOException $e) {
+
+                error_log(
+                    sprintf(
+                        "[%s] Erreur écriture PERSONNE (personne:{$personne->getMail()}) : %s",
+                        date(DbManager::DATE_FORMAT),
+                        $e->getMessage()
+                    )
+                );
+
+                throw new DatabaseWriteException(
+                    "Erreur impossible d'insérer la personne",
+                    0,
+                    $e
+                );
+            }
+        }
+
+        #endregion
+
+    #endregion
+
+    #region UPDATE
+
+    #endregion
+
+    #region DELETE
 
         #endregion
 }
