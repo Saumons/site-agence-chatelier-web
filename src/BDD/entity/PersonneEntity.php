@@ -123,10 +123,21 @@ class PersonneEntity
     }
 
     /**
-     * Récupère le numéro de téléphone de la personne
+     * Récupère le numéro de téléphone de la personne (en format
+     * +33 sans espace)
      * @return string|null le numéro de téléphone de la personne
      */
     public function getTel(): ?string
+    {
+        return $this->tel;;
+    }
+
+    /**
+     * Récupère le numéro de téléphone de la personne formatter
+     * en 06 72 ...
+     * @return string|null le numéro de téléphone de la personne
+     */
+    public function getFormattedTel(): ?string
     {
         $tel = $this->tel;
         if ($tel !== null) {
