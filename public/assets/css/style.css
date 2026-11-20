@@ -193,6 +193,10 @@ header {
     justify-content: space-evenly;
   }
 }
+.footer__content a {
+  text-decoration: none;
+  color: hsl(258, 59%, 8%);
+}
 .footer__company {
   display: flex;
   flex-direction: column;
@@ -285,6 +289,10 @@ header {
     flex-direction: row;
     justify-content: space-between;
   }
+}
+.footer__legal-link {
+  text-decoration: none;
+  color: hsl(258, 59%, 8%);
 }
 .footer__copyright {
   font-size: 0.95rem;

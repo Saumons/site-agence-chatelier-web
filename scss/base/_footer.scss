@@ -87,6 +87,11 @@
       flex-direction: row;
       justify-content: space-evenly;
     }
+
+    & a{
+      text-decoration: none;
+      color: $color-dark;
+    }
   }
 
   // ---------- Société ----------
@@ -213,6 +218,11 @@
     @media (width >= #{map.get($breakpoints, lg)}) {
       flex-direction: row;
       justify-content: space-between;
+    }
+
+    &-link{
+      text-decoration: none;
+      color: $color-dark;
     }
   }
 
