@@ -27,13 +27,13 @@
         </div>
 
 
-        <!--
+
         <nav class="header-menu">
             <a href="" class="menu-attribut">Nos réalisations</a>
             <a href="" class="menu-attribut">Nos services</a>
             <a href="" class="menu-attribut">Nos engagement</a>
         </nav>
-        -->
+
 
         <button class="header-modeNuit"></button>
 
