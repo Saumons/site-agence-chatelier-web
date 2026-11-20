@@ -1,3 +1,4 @@
+@charset "UTF-8";
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -48,82 +49,373 @@ table {
   border-spacing: 0;
 }
 
-header {
-  font-size: 1.5rem;
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* ---------- Header ---------- */
+/* Concept : bandeau rosé, liseré bordeaux, liens en pilules sur desktop, panneau déroulant plein écran sur mobile.
+   Toutes les couleurs sont déclarées sur .header : le reste de la page (body, main, footer) n'est pas touché. */
+.header {
+  --surface: #F2EBEB;
+  --fg: #1f1414;
+  --accent: #813434;
+  --accent-ink: #ffffff;
+  --line: #e0d3d3;
+  --tint: rgba(129, 52, 52, 0.10);
+  --font-display: 'Montserrat', system-ui, sans-serif;
+  --font-body: 'Sora', system-ui, sans-serif;
+  --font-nav: 'Lexend', system-ui, sans-serif;
+  --header-h: 72px;
+  position: relative;
+  z-index: 10;
   display: flex;
-  flex-direction: row;
-  border-bottom: solid;
-  background-color: #F2EBEB;
+  align-items: center;
+  gap: 0.75rem;
+  height: var(--header-h);
+  padding-left: max(clamp(16px, 3vw, 40px), env(safe-area-inset-left, 0px));
+  padding-right: max(clamp(16px, 3vw, 40px), env(safe-area-inset-right, 0px));
+  background: var(--surface);
+  color: var(--fg);
+  border-bottom: 3px solid var(--accent);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme=light]) .header {
+    --surface: #F2EBEB;
+    --fg: #040404;
+    --accent: #0b0c0c;
+    --accent-ink: #ffffff;
+    --line: #3a2c2c;
+    --tint: rgba(217, 138, 132, 0.14);
+  }
+}
+:root[data-theme=dark] .header {
+  --surface: #201818;
+  --fg: #f4eded;
+  --accent: #d98a84;
+  --accent-ink: #1a0d0d;
+  --line: #3a2c2c;
+  --tint: rgba(217, 138, 132, 0.14);
+}
+
+.header__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  color: inherit;
+  text-decoration: none;
+  min-width: 0;
+}
+
+.header__logo {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  fill: var(--accent);
+}
+
+.header__titre-entreprise {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  line-height: 1.1;
+}
+
+.header__titre-entreprise p {
+  margin: 0;
+}
+
+.header__nom {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 0.03em;
+  color: var(--fg);
+}
+
+.header__sous-titre {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  letter-spacing: 0.5em;
+  padding-left: 0.5em;
+  color: var(--accent);
+}
+
+/* ---------- Bouton mode nuit ---------- */
+.header__mode-nuit {
+  order: 1;
+  margin-left: auto;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.header__mode-nuit svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.header__mode-nuit:hover {
+  background: var(--tint);
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* ---------- Navigation ---------- */
+nav {
+  order: 2;
+}
+
+.header__contact {
+  visibility: hidden;
+}
+
+#toggle {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Burger */
+.header__burger {
+  position: relative;
+  display: block;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  color: var(--fg);
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.header__burger:hover {
+  background: var(--tint);
+}
+
+.header__burger span {
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+  transition: top 0.3s ease, transform 0.3s ease, opacity 0.2s ease;
+}
+
+.header__burger span:nth-child(1) {
+  top: 14px;
+}
+
+.header__burger span:nth-child(2) {
+  top: 21px;
+}
+
+.header__burger span:nth-child(3) {
+  top: 28px;
+}
+
+#toggle:checked ~ .header__burger span:nth-child(1) {
+  top: 21px;
+  transform: rotate(45deg);
+}
+
+#toggle:checked ~ .header__burger span:nth-child(2) {
+  opacity: 0;
+}
+
+#toggle:checked ~ .header__burger span:nth-child(3) {
+  top: 21px;
+  transform: rotate(-45deg);
+}
+
+#toggle:focus-visible ~ .header__burger,
+.header__mode-nuit:focus-visible,
+.header__pages a:focus-visible,
+.header__brand:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Panneau mobile */
+.header__pages {
+  position: absolute;
+  top: calc(100% + 3px);
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.5rem max(16px, env(safe-area-inset-right, 0px)) 1rem max(16px, env(safe-area-inset-left, 0px));
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 24px 32px -20px rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
+}
+
+#toggle:checked ~ .header__pages {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.header__pages a {
+  display: flex;
+  align-items: center;
   justify-content: space-between;
+  padding: 1rem 0.9rem;
+  border-radius: 12px;
+  font-family: var(--font-nav);
+  font-size: 1.05rem;
+  color: var(--fg);
+  text-decoration: none;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-.header-modeNuit {
-  background-color: red;
+.header__pages a::after {
+  content: "→";
+  color: var(--accent);
+  transition: transform 0.2s;
 }
 
-.header-menu {
-  display: flex;
-  flex-direction: row;
+.header__pages a:hover {
+  background: var(--tint);
+  color: var(--accent);
 }
 
-@media (min-width: 700px) {
-  /* CSS styles for screens 768px or wider */
-  .header-logo {
-    width: 10%;
-    height: 10%;
+.header__pages a:hover::after {
+  transform: translateX(4px);
+}
+
+.header__pages a[aria-current=page] {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+
+.header__pages a[aria-current=page]::after {
+  color: var(--accent-ink);
+}
+
+/* ---------- Desktop ---------- */
+@media (min-width: 992px) {
+  .header {
+    --header-h: 88px;
   }
-  .header-titre-entreprise {
+  .header__contact-menu {
+    visibility: hidden;
+  }
+  .header__logo {
+    width: 48px;
+    height: 48px;
+    margin-left: 20%;
+    margin-right: 20%;
+  }
+  .header__nom {
+    font-size: 1.5rem;
+  }
+  .header__sous-titre {
+    font-size: 1rem;
+  }
+  .header__menu {
+    order: 1;
+    margin-right: 11%;
+    margin-left: 20%;
+  }
+  .header__mode-nuit {
+    order: 2;
+    margin-left: 0.5rem;
+  }
+  .header__burger {
+    display: none;
+  }
+  .header__pages {
+    position: static;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: none;
+  }
+  .header__pages a {
+    padding: 0.65rem 1.25rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+  }
+  .header__pages a::after {
+    display: none;
+  }
+  /* Bouton Contact : texte centré horizontalement et verticalement.
+     ".header .header__contact" est plus spécifique que ".header__pages a", donc
+     display, padding et justify-content ne sont plus écrasés. */
+  .header .header__contact {
+    order: 2;
+    visibility: visible;
+    margin-left: auto;
+    margin-right: 4%;
+    flex-shrink: 0;
     display: flex;
-    flex-direction: column;
-    row-gap: 0%;
-  }
-  .header-titre-entreprise p {
-    margin: 0;
-  }
-  .chat-elier {
-    font-weight: 800;
-    font-size: 150%;
-    font-family: "Montserrat", sans-serif;
-    stroke-width: 0.265px;
-    paint-order: markers fill stroke;
-    fill: #000000;
-  }
-  .web {
-    font-size: 150%;
-    font-family: "Sora", sans-serif;
-    stroke-width: 0.265px;
-    paint-order: markers fill stroke;
-    fill: #000000;
-  }
-  .header-menu-burger {
-    display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 15%;
-    height: 15%;
+    width: 105px;
+    height: 45px;
     padding: 0;
-    background: block;
-    border: none;
-    flex-shrink: 0;
-    background-color: #000000;
-    margin: 0;
+    border: 1px solid var(--line);
+    border-radius: 15%;
+    background: #000000;
+    color: #ffffff;
+    font-family: var(--font-nav);
+    font-size: 0.95rem;
+    line-height: 1;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
   }
-  .header-menu-burger .ham {
-    width: 90%;
-    height: 90%;
-    display: block;
+  .header .header__contact:hover {
+    background: var(--accent);
+    color: var(--accent-ink);
   }
-  .header-menu-burger .line {
-    fill: none;
-    stroke: #ffffff;
-    stroke-width: 5.5;
-    stroke-linecap: round;
+  .header .header__contact:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
   }
-  .header-menu-burger .ham1 .top {
-    stroke-dasharray: 40 139;
-  }
-  .header-menu-burger .ham1 .bottom {
-    stroke-dasharray: 40 180;
+}
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.01ms !important;
   }
 }
 .footer {
