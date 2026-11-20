@@ -145,7 +145,7 @@
     align-items: center;
 
     @media (width >= #{map.get($breakpoints, md)}) {
-      justify-content: space-between;
+      justify-content: space-evenly;
     }
   }
 
