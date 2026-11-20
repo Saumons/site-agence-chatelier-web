@@ -5,3 +5,4 @@
 public/assets/css/*.map
 .phpunit.result.cache
 .idea/
+.vscode/
