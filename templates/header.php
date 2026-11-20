@@ -13,30 +13,34 @@
 
 <body>
     <header class="header">
-
-        <svg class="header__logo" viewBox="0 0 64.532997 90.939003">
-            <use href="assets/images/ChatelierLogoSeul.svg#layer1"></use>
-        </svg>
-
-        <div class="header__titre-entreprise">
-            <p class="chat-elier">CHAT'ELIER</p>
-            <p class="web">WEB</p>
-        </div>
-
-        
-            <svg class="header__modeNuit lune" role="button" tabindex="0" aria-label="Mode nuit" viewBox="0 0 64.532997 90.939003">
-                <use href="assets/images/lune.svg#layer1"></use>
+        <a class="header__brand" href="#" aria-label="Chat'elier Web, accueil">
+            <svg class="header__logo" viewBox="0 0 64.532997 90.939003" aria-hidden="true">
+                <use href="assets/images/ChatelierLogoSeul.svg#layer1"></use>
             </svg>
-        
+            <div class="header__titre-entreprise">
+                <p class="chat-elier">CHAT'ELIER</p>
+                <p class="web">WEB</p>
+            </div>
+        </a>
 
-        <nav>
-            <label class="header__burger" for="toggle">☰</label>
-            <input type="checkbox" id="toggle">
+        <nav aria-label="Navigation principale" class="menu">
+            <input type="checkbox" id="toggle" aria-label="Ouvrir le menu">
+            <label class="header__burger" for="toggle" aria-hidden="true">
+                <span></span><span></span><span></span>
+            </label>
             <div class="main_pages">
-                <a href="#">Accueil</a>
-                <a href="#">Actualité</a>
-                <a href="#">Contact</a>
+                <a href="#" >Nos réalisations</a>
+                <a href="#">Nos services</a>
+                <a href="#">Nos engagements</a>
+                <a href="#" class="contact_menu">Contacter l'équipe</a>
             </div>
         </nav>
 
+        <button class="header__modeNuit" id="modeNuit" type="button" aria-label="Activer le mode nuit" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+            </svg>
+        </button>
+
+        <a href="#" class="contact">Ecrire a l'équipe</a>
     </header>
