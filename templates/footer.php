@@ -77,6 +77,7 @@
             </div>
         </section>
 
+        <section class="footer__infos">
         <section class="footer__navigation">
             <h2 class="footer__section-title">
                 L'AGENCE
@@ -100,6 +101,7 @@
                 <li class="footer__contact-item">adresse</li>
                 <li class="footer__contact-item">17000, La Rochelle</li>
             </ul>
+        </section>
         </section>
 
     </section>
