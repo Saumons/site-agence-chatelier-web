@@ -18,29 +18,29 @@
                 <use href="assets/images/ChatelierLogoSeul.svg#layer1"></use>
             </svg>
             <div class="header__titre-entreprise">
-                <p class="chat-elier">CHAT'ELIER</p>
-                <p class="web">WEB</p>
+                <p class="header__nom">CHAT'ELIER</p>
+                <p class="header__sous-titre">WEB</p>
             </div>
         </a>
 
-        <nav aria-label="Navigation principale" class="menu">
+        <nav aria-label="Navigation principale" class="header__menu">
             <input type="checkbox" id="toggle" aria-label="Ouvrir le menu">
             <label class="header__burger" for="toggle" aria-hidden="true">
                 <span></span><span></span><span></span>
             </label>
-            <div class="main_pages">
-                <a href="#" >Nos réalisations</a>
+            <div class="header__pages">
+                <a href="#">Nos réalisations</a>
                 <a href="#">Nos services</a>
                 <a href="#">Nos engagements</a>
-                <a href="#" class="contact_menu">Contacter l'équipe</a>
+                <a href="#" class="header__contact-menu">Contacter l'équipe</a>
             </div>
         </nav>
 
-        <button class="header__modeNuit" id="modeNuit" type="button" aria-label="Activer le mode nuit" aria-pressed="false">
+        <button class="header__mode-nuit" id="modeNuit" type="button" aria-label="Activer le mode nuit" aria-pressed="false">
             <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
             </svg>
         </button>
 
-        <a href="#" class="contact">Ecrire a l'équipe</a>
+        <a href="#" class="header__contact">Ecrire a l'équipe</a>
     </header>

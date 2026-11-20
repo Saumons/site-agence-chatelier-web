@@ -133,7 +133,7 @@ body {
   margin: 0;
 }
 
-.chat-elier {
+.header__nom {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 1.2rem;
@@ -141,7 +141,7 @@ body {
   color: var(--fg);
 }
 
-.web {
+.header__sous-titre {
   font-family: var(--font-body);
   font-size: 0.85rem;
   letter-spacing: 0.5em;
@@ -150,7 +150,7 @@ body {
 }
 
 /* ---------- Bouton mode nuit ---------- */
-.header__modeNuit {
+.header__mode-nuit {
   order: 1;
   margin-left: auto;
   flex-shrink: 0;
@@ -167,7 +167,7 @@ body {
   transition: background-color 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.header__modeNuit svg {
+.header__mode-nuit svg {
   width: 22px;
   height: 22px;
   fill: none;
@@ -177,7 +177,7 @@ body {
   stroke-linejoin: round;
 }
 
-.header__modeNuit:hover {
+.header__mode-nuit:hover {
   background: var(--tint);
   color: var(--accent);
   border-color: var(--accent);
@@ -188,7 +188,7 @@ nav {
   order: 2;
 }
 
-.contact {
+.header__contact {
   visibility: hidden;
 }
 
@@ -253,15 +253,15 @@ nav {
 }
 
 #toggle:focus-visible ~ .header__burger,
-.header__modeNuit:focus-visible,
-.main_pages a:focus-visible,
+.header__mode-nuit:focus-visible,
+.header__pages a:focus-visible,
 .header__brand:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
 /* Panneau mobile */
-.main_pages {
+.header__pages {
   position: absolute;
   top: calc(100% + 3px);
   left: 0;
@@ -279,14 +279,14 @@ nav {
   transition: opacity 0.25s ease, transform 0.25s ease, visibility 0s linear 0.25s;
 }
 
-#toggle:checked ~ .main_pages {
+#toggle:checked ~ .header__pages {
   opacity: 1;
   visibility: visible;
   transform: none;
   transition-delay: 0s;
 }
 
-.main_pages a {
+.header__pages a {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -299,27 +299,27 @@ nav {
   transition: background-color 0.2s, color 0.2s;
 }
 
-.main_pages a::after {
+.header__pages a::after {
   content: "→";
   color: var(--accent);
   transition: transform 0.2s;
 }
 
-.main_pages a:hover {
+.header__pages a:hover {
   background: var(--tint);
   color: var(--accent);
 }
 
-.main_pages a:hover::after {
+.header__pages a:hover::after {
   transform: translateX(4px);
 }
 
-.main_pages a[aria-current=page] {
+.header__pages a[aria-current=page] {
   background: var(--accent);
   color: var(--accent-ink);
 }
 
-.main_pages a[aria-current=page]::after {
+.header__pages a[aria-current=page]::after {
   color: var(--accent-ink);
 }
 
@@ -328,7 +328,7 @@ nav {
   .header {
     --header-h: 88px;
   }
-  .contact_menu {
+  .header__contact-menu {
     visibility: hidden;
   }
   .header__logo {
@@ -337,25 +337,25 @@ nav {
     margin-left: 20%;
     margin-right: 20%;
   }
-  .chat-elier {
+  .header__nom {
     font-size: 1.5rem;
   }
-  .web {
+  .header__sous-titre {
     font-size: 1rem;
   }
-  .menu {
+  .header__menu {
     order: 1;
     margin-right: 11%;
     margin-left: 20%;
   }
-  .header__modeNuit {
+  .header__mode-nuit {
     order: 2;
     margin-left: 0.5rem;
   }
   .header__burger {
     display: none;
   }
-  .main_pages {
+  .header__pages {
     position: static;
     flex-direction: row;
     align-items: center;
@@ -369,18 +369,18 @@ nav {
     transform: none;
     transition: none;
   }
-  .main_pages a {
+  .header__pages a {
     padding: 0.65rem 1.25rem;
     border-radius: 999px;
     font-size: 0.95rem;
   }
-  .main_pages a::after {
+  .header__pages a::after {
     display: none;
   }
   /* Bouton Contact : texte centré horizontalement et verticalement.
-     ".header .contact" est plus spécifique que ".main_pages a", donc
+     ".header .header__contact" est plus spécifique que ".header__pages a", donc
      display, padding et justify-content ne sont plus écrasés. */
-  .header .contact {
+  .header .header__contact {
     order: 2;
     visibility: visible;
     margin-left: auto;
@@ -404,11 +404,11 @@ nav {
     cursor: pointer;
     transition: background-color 0.2s, color 0.2s;
   }
-  .header .contact:hover {
+  .header .header__contact:hover {
     background: var(--accent);
     color: var(--accent-ink);
   }
-  .header .contact:focus-visible {
+  .header .header__contact:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 2px;
   }
