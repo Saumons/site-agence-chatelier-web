@@ -13,9 +13,9 @@ use InvalidArgumentException;
 class PersonneEntity
 {
     #region Properties
-    private const NOMPRENOM_LENGHT = 50;
-    private const MAIL_LENGHT = 100;
-    private const TEL_LENGHT = 15;
+    private const NOMPRENOM_LENGTH = 50;
+    private const MAIL_LENGTH = 100;
+    private const TEL_LENGTH = 15;
 
     private string $mail;           // clé primaire / VARCHAR (100)
     private string $nom;            // VARCHAR (50)
@@ -180,7 +180,7 @@ class PersonneEntity
             $tel = str_replace(' ', '', $tel);
             // Test si le numéro de téléphone est valide
             if (!preg_match('/^(0|\+33)[1-9](\d{8})$/', $tel)
-                || mb_strlen($tel, 'UTF-8') > PersonneEntity::TEL_LENGHT) {
+                || mb_strlen($tel, 'UTF-8') > PersonneEntity::TEL_LENGTH) {
                 throw new InvalidArgumentException('Numéro de téléphone invalide');
             } // Passe le numéro de téléphone en version +33
             elseif (str_starts_with($tel, '0')) {
@@ -193,10 +193,10 @@ class PersonneEntity
     private static function assertEmailIsValid(string $mail): void {
         // Test si l'email est valide
         if (!filter_var($mail, FILTER_VALIDATE_EMAIL)
-            || mb_strlen($mail, 'UTF-8') > PersonneEntity::MAIL_LENGHT) {
+            || mb_strlen($mail, 'UTF-8') > PersonneEntity::MAIL_LENGTH) {
             throw new InvalidArgumentException(sprintf(
                 "email invalide, vide ou supérieur à %d caractères.",
-                self::MAIL_LENGHT
+                self::MAIL_LENGTH
             ));
         }
     }
@@ -204,10 +204,10 @@ class PersonneEntity
     private static function assertPrenomIsValid(?string $prenom): void {
         // Test si le prenom est valide
         if (!is_null($prenom)
-            && mb_strlen($prenom, 'UTF-8') > PersonneEntity::NOMPRENOM_LENGHT) {
+            && mb_strlen($prenom, 'UTF-8') > PersonneEntity::NOMPRENOM_LENGTH) {
             throw new InvalidArgumentException(sprintf(
                 "prénom invalide, supérieur à %d caractères.",
-                self::NOMPRENOM_LENGHT
+                self::NOMPRENOM_LENGTH
             ));
         }
     }
@@ -215,10 +215,10 @@ class PersonneEntity
     private static function assertNomIsValid(string $nom): void {
         // Test si le prenom est valide
         if (trim($nom) === ''
-                || mb_strlen($nom, 'UTF-8') > PersonneEntity::NOMPRENOM_LENGHT) {
+                || mb_strlen($nom, 'UTF-8') > PersonneEntity::NOMPRENOM_LENGTH) {
             throw new InvalidArgumentException(sprintf(
                 "nom invalide, supérieur à %d caractères.",
-                self::NOMPRENOM_LENGHT
+                self::NOMPRENOM_LENGTH
             ));
         }
     }

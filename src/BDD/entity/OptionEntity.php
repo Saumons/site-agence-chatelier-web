@@ -13,8 +13,8 @@ use InvalidArgumentException;
 class OptionEntity
 {
     #region Properties
-    private const NOM_LENGHT = 50;
-    private const NBJOUR_LENGHT = 15;
+    private const NOM_LENGTH = 50;
+    private const NBJOUR_LENGTH = 15;
     private const NBJOUR_DECI = 2;
     private int|null $idOption;     // généré automatiquement en base / int
     private string $nom;            // varchar(50)
@@ -154,12 +154,12 @@ class OptionEntity
     private static function assertNbJourHommeIsValid(float $nbJourHomme): void {
         // Test si nbJourHomme est positif et rentre dans un decimal(15,2)
         if ($nbJourHomme <= 0
-            || !self::assertIsDecimal(OptionEntity::NBJOUR_LENGHT - OptionEntity::NBJOUR_DECI,
+            || !self::assertIsDecimal(OptionEntity::NBJOUR_LENGTH - OptionEntity::NBJOUR_DECI,
                 OptionEntity::NBJOUR_DECI,
                 $nbJourHomme)) {
             throw new InvalidArgumentException(sprintf(
                 "nombre jour homme invalide, est négatif, null ou à plus de %d chiffres avant la virgule ou %s après",
-                OptionEntity::NBJOUR_LENGHT - OptionEntity::NBJOUR_DECI,
+                OptionEntity::NBJOUR_LENGTH - OptionEntity::NBJOUR_DECI,
                 OptionEntity::NBJOUR_DECI
             ));
         }
@@ -168,10 +168,10 @@ class OptionEntity
     private static function assertNomIsValid(string $nom): void {
         // Test si le nom n'est pas vide est qu'il rentre en varchar(50)
         if (trim($nom) === ''
-                || mb_strlen($nom, 'UTF-8') > OptionEntity::NOM_LENGHT) {
+                || mb_strlen($nom, 'UTF-8') > OptionEntity::NOM_LENGTH) {
             throw new InvalidArgumentException(sprintf(
                 "nom invalide, vide ou supérieur à %d caractères.",
-                self::NOM_LENGHT
+                self::NOM_LENGTH
             ));
         }
 

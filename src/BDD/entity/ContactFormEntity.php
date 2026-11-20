@@ -13,7 +13,7 @@ use InvalidArgumentException;
 class ContactFormEntity
 {
     #region Properties
-    private const OBJ_LENGHT = 75;
+    private const OBJ_LENGTH = 75;
 
     private int|null $idContact;            // généré automatiquement en base / int
     private string $objet;                  // varchar(75)
@@ -134,10 +134,10 @@ class ContactFormEntity
     private static function assertObjetIsValid(string $objet) : void {
         // Test si l'objet n'est pas vide et qu'il rentre dans un varchar(75)
         if (trim($objet) === ''
-                || mb_strlen($objet, 'UTF-8') > self::OBJ_LENGHT) {
+                || mb_strlen($objet, 'UTF-8') > self::OBJ_LENGTH) {
             throw new InvalidArgumentException(sprintf(
                 "objet invalide, vide ou supérieur à %d caractères.",
-                self::OBJ_LENGHT
+                self::OBJ_LENGTH
             ));
         }
     }

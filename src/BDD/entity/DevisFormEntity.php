@@ -15,7 +15,7 @@ use InvalidArgumentException;
 class DevisFormEntity
 {
     #region Properties
-    private const NOMPROJ_LENGHT = 50;
+    private const NOMPROJ_LENGTH = 50;
     private int|null $idDevis;                  // généré automatiquement en base / int
     private DevisFormTypeEnum $type;            // enum
     private string|null $nomProjet;             // varchar(50)
@@ -251,10 +251,10 @@ class DevisFormEntity
     private static function assertNomProjetIsValid(?string $nomProjet): void {
         // Test si le nom est valide (varchar(50))
         if (!is_null($nomProjet)
-                && mb_strlen($nomProjet, 'UTF-8') > self::NOMPROJ_LENGHT) {
+                && mb_strlen($nomProjet, 'UTF-8') > self::NOMPROJ_LENGTH) {
             throw new InvalidArgumentException(sprintf(
                 "nom du projet invalide, supérieur à %d caractères.",
-                self::NOMPROJ_LENGHT
+                self::NOMPROJ_LENGTH
             ));
         }
     }
