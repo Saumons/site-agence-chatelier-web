@@ -17,8 +17,13 @@
     flex-direction: column;
     align-items: center;
 
-    @media (width >= #{map.get($breakpoints, lg)}) {
+    @media (width >= #{map.get($breakpoints, md)}) {
       flex-direction: row;
+      justify-content: center;
+      gap: 4em;
+    }
+
+    @media (width >= #{map.get($breakpoints, lg)}) {
       justify-content: center;
       gap: 4em;
     }
@@ -35,6 +40,8 @@
   }
 
   &__slogan {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 1rem;
     font-size: 2rem;
 
