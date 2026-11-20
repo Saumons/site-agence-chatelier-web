@@ -9,7 +9,7 @@ require __DIR__ . '/../templates/header.php';
 ?>
 
 
-    <main class="main">
+    <main class="main main--engagements">
         <section class="main__background">
             <img src="./assets/images/svg/fonds/nosEngagements.svg" alt="">
         </section>
