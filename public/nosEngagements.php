@@ -11,7 +11,7 @@ require __DIR__ . '/../templates/header.php';
 
     <main class="main">
         <section class="main__background">
-            <img class="background" src="./assets/images/svg/fonds/nosEngagements.svg" alt="Fond de parc" />
+            <img src="./assets/images/svg/fonds/nosEngagements.svg" alt="">
         </section>
         <section class="main__content">
             <h1 class="main__title">
