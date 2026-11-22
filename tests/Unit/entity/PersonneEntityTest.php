@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\unit\entity;
+namespace Tests\Unit\entity;
 
 use App\BDD\entity\PersonneEntity;
 use InvalidArgumentException;

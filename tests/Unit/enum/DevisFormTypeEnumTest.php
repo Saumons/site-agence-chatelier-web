@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\unit\enum;
+namespace Tests\Unit\enum;
 
 use App\enums\DevisFormTypeEnum;
 use PHPUnit\Framework\TestCase;
