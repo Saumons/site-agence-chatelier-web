@@ -660,7 +660,7 @@ h1, h2, h3 {
 .main .main__article:last-child {
   margin-bottom: 0;
 }
-.main .main__contact {
+.main .main__button {
   display: inline-block;
   padding: 0.75rem 1.25rem;
   border-radius: 0.5rem;
@@ -724,4 +724,29 @@ h1, h2, h3 {
   .main .main__section:last-child {
     padding-bottom: 80px;
   }
+}
+.card-member {
+  display: flex;
+  flex-direction: row;
+}
+.card-member .card-member__image {
+  height: 8rem;
+  border-radius: 4rem;
+}
+.card-member .card-member__name {
+  font-size: 2rem;
+}
+.card-member .card-member__texts {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card-member--inverted {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.card-project .card-project__image {
+  width: 100%;
+  height: auto;
 }

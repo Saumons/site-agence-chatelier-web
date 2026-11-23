@@ -1,0 +1,31 @@
+.card-member {
+
+  display: flex;
+  flex-direction: row;
+
+  .card-member__image {
+    height: 8rem;
+    border-radius: 4rem;
+  }
+
+  .card-member__name {
+    font-size: 2rem;
+  }
+
+  .card-member__texts {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+.card-member--inverted {
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}
+
+.card-project {
+  .card-project__image {
+    width: 100%;
+    height: auto;
+  }
+}
