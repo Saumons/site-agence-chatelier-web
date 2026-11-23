@@ -8,7 +8,7 @@ require __DIR__ . '/../templates/header.php';
 
 ?>
 
-    <img class="page-background page-background--accueil" src="./assets/images/svg/fonds/accueil.svg" alt="">
+    <img class="page-background page-background--accueil" src="assets/images/svg/fonds/accueil.svg" alt="">
 
     <main class="main main--home">
         <header class="main__header">
@@ -124,11 +124,28 @@ require __DIR__ . '/../templates/header.php';
             <h2 class="main__subtitle">
                 Nos Projets
             </h2>
-            <article class="main__article card-project">
-                <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
-                <h3 class="card-project__name">Projet1</h3>
-                <p class="card-project__description">Description du projet 1</p>
-            </article>
+            <div class="main__cards">
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+            </div>
             <a href="nosRealisations.php" class="main__button main__button--projects">Placeholder</a>
         </section>
 
@@ -136,11 +153,28 @@ require __DIR__ . '/../templates/header.php';
             <h2 class="main__subtitle">
                 Nos Services
             </h2>
-            <article class="main__article card-project">
-                <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
-                <h3 class="card-project__name">Projet1</h3>
-                <p class="card-project__description">Description du projet 1</p>
-            </article>
+            <div class="main__cards">
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+                <article class="main__article card-project">
+                    <img class="card-project__image" src="./assets/images/placeholders/landscape.jpg" alt="Photo de projet">
+                    <h3 class="card-project__name">Projet1</h3>
+                    <p class="card-project__description">Description du projet 1</p>
+                </article>
+            </div>
             <a href="nosServices.php" class="main__button main__button--projects">Placeholder</a>
         </section>
 
