@@ -3,4 +3,6 @@
 .env
 .DS_Store
 public/assets/css/*.css
-
+.phpunit.result.cache
+.idea/
+.vscode/
