@@ -1,0 +1,24 @@
+// ==========================================================
+// Variables du projet
+// ==========================================================
+
+// Couleurs — notation hsl(teinte, saturation, luminosité)
+$bg-jour: hsl(0, 21%, 94%);
+$color-dark: hsl(258, 59%, 8%);
+$color-light: hsl(0, 21%, 94%);
+$color-button: hsl(0, 0%, 12%);
+
+
+
+// typography
+$font-montserrat: 'Montserrat', sans-serif;
+$font-sora: 'Sora', sans-serif;
+$font-lexend: 'Lexend', sans-serif;
+
+// breakpoints
+$breakpoints: (
+        sm: 576px,
+        md: 750px,
+        lg: 1024px,
+        xl: 1280px
+);
