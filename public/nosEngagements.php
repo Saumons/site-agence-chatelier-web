@@ -8,17 +8,17 @@ require __DIR__ . '/../templates/header.php';
 
 ?>
 
+    <img class="page-background page-background--engagements" src="./assets/images/svg/fonds/nosEngagements.svg" alt="">
+
 
     <main class="main main--engagements">
-        <section class="main__background">
-            <img src="./assets/images/svg/fonds/nosEngagements.svg" alt="">
-        </section>
-        <section class="main__content">
+        <header class="main__header">
             <h1 class="main__title">
                 Nos Engagements
             </h1>
+        </header>
 
-            <article class="main__article">
+            <section class="main__section">
                 <h2 class="main__subtitle">
                     Un atelier, pas une usine
                 </h2>
@@ -28,9 +28,9 @@ require __DIR__ . '/../templates/header.php';
                     Quand c’est possible, on privilégie aussi des solutions d’IA en local, pour garder la maîtrise de nos données et de notre impact environnemental.
                     Parce que la machine peut nous donner un bon coup de patte, mais c’est toujours à nous de garder le contrôle.
                 </p>
-            </article>
+            </section>
 
-            <article class="main__article">
+            <section class="main__section">
                 <h2 class="main__subtitle">
                     Une patte verte
                 </h2>
@@ -40,9 +40,9 @@ require __DIR__ . '/../templates/header.php';
                     Et surtout, on évite la consommation superflue. Générer une image par IA pour des ressources temporaires, c’est mobiliser de l’énergie, de l’eau et des ressources pour quelque chose qui finira à la poubelle.
                     Parce qu’un site léger, bien conçu et correctement hébergé, c’est un site qui consomme moins — et qui ronronne tout aussi bien.
                 </p>
-            </article>
+            </section>
 
-            <article class="main__article">
+            <section class="main__section">
                 <h2 class="main__subtitle">
                     Chat, mais humain avant tout
                 </h2>
@@ -51,8 +51,7 @@ require __DIR__ . '/../templates/header.php';
                     À mesure que nous grandirons, nous aimerions accueillir des stagiaires et des alternants, leur faire découvrir les métiers du web, leur transmettre notre expérience et contribuer, à notre échelle, à ouvrir des portes dans un marché de l’emploi parfois difficile pour les jeunes profils.
                     Parce qu’aider les nouvelles générations à mettre une patte dans le monde professionnel, c’est aussi notre façon de contribuer à un web plus ouvert.
                 </p>
-            </article>
-        </section>
+            </section>
     </main>
 
 
