@@ -1,21 +1,129 @@
 // ==========================================================
-// Variables du projet
+// Project variables
 // ==========================================================
 
-// Couleurs — notation hsl(teinte, saturation, luminosité)
-$bg-jour: hsl(0, 21%, 94%);
+// ==========================================================
+// Colors
+// ==========================================================
+
+// Main colors
+$bg-day: hsl(0, 21%, 94%);
 $color-dark: hsl(258, 59%, 8%);
+$black: hsla(0, 0%, 0%, 1);
 $color-light: hsl(0, 21%, 94%);
-$color-button: hsl(0, 0%, 12%);
 
+// ==========================================================
+// Greys
+// ==========================================================
 
+$grey: hsl(0, 0%, 85%);
 
-// typography
+// Lighter greys
+$grey-1: hsla(0, 0%, 85%, 1); // #DADADA
+$grey-2: hsla(0, 0%, 87%, 1); // #DEDEDE
+$grey-3: hsla(0, 0%, 93%, 1); // #EEEEEE
+$grey-4: hsla(0, 0%, 100%, 1); // #FFFFFF
+
+// Darker greys
+$grey-minus-1: hsla(0, 0%, 84%, 1); // #D6D6D6
+$grey-minus-2: hsla(0, 0%, 83%, 1); // #D3D3D3
+$grey-minus-3: hsla(0, 0%, 82%, 1); // #D0D0D0
+$grey-minus-4: hsla(0, 0%, 81%, 1); // #CFCFCF
+$grey-minus-5: hsla(0, 0%, 80%, 1); // #CCCCCC
+$grey-minus-6: hsla(0, 0%, 79%, 1); // #CACACA
+$grey-minus-7: hsla(0, 0%, 79%, 1); // #C9C9C9
+$grey-minus-8: hsla(0, 0%, 78%, 1); // #C7C7C7
+$grey-minus-9: hsla(0, 0%, 77%, 1); // #C5C5C5
+$grey-minus-10: hsla(0, 0%, 77%, 1); // #C4C4C4
+$grey-minus-11: hsla(0, 0%, 76%, 1); // #C2C2C2
+$grey-minus-12: hsla(0, 0%, 75%, 1); // #C0C0C0
+$grey-minus-13: hsla(0, 0%, 73%, 1); // #BBBBBB
+$grey-minus-14: hsla(0, 0%, 71%, 1); // #B5B5B5
+$grey-minus-15: hsla(0, 0%, 70%, 1); // #B2B2B2
+$grey-minus-16: hsla(0, 0%, 69%, 1); // #B0B0B0
+$grey-minus-17: hsla(0, 0%, 68%, 1); // #AEAEAE
+$grey-minus-18: hsla(0, 0%, 66%, 1); // #A9A9A9
+$grey-minus-19: hsla(0, 0%, 65%, 1); // #A5A5A5
+$grey-minus-20: hsla(0, 0%, 49%, 1); // #7D7D7D
+$grey-minus-21: hsla(0, 0%, 42%, 1); // #6B6B6B
+$grey-minus-22: hsla(0, 0%, 33%, 1); // #555555
+$grey-minus-23: hsla(0, 0%, 20%, 1); // #333333
+$grey-minus-24: hsla(0, 0%, 12%, 1); // #1E1E1E
+$grey-minus-25: hsla(0, 0%, 0%, 1); // #000000
+
+// Tinted greys
+$grey-blue: hsla(240, 8%, 57%, 1); // #888899
+$grey-khaki: hsla(48, 6%, 35%, 1); // #5D5B53
+$grey-brown: hsla(12, 19%, 11%, 1); // #201816
+$grey-warm-charcoal: hsla(0, 3%, 30%, 1); // #4F4B4B
+
+// ==========================================================
+// Red, pink and burgundy
+// ==========================================================
+
+$burgundy-black: hsla(0, 12%, 17%, 1); // #322727
+$dark-burgundy: hsla(0, 10%, 25%, 1); // #453939
+$reddish-brown: hsla(26, 85%, 21%, 1); // #622F08
+$dark-terracotta: hsla(14, 36%, 37%, 1); // #804C3C
+$brownish-pink: hsla(14, 21%, 48%, 1); // #936C60
+$dark-dusty-pink: hsla(11, 17%, 62%, 1); // #AF948E
+$greyish-pink: hsla(0, 8%, 74%, 1); // #C2B7B7
+$dusty-pink: hsla(0, 22%, 80%, 1); // #D7C1C1
+$salmon-pink: hsla(0, 50%, 70%, 1); // #D98C8C
+$bright-red: hsla(0, 79%, 56%, 1); // #E83636
+$crimson-red: hsla(0, 66%, 52%, 1); // #D93232
+
+// ==========================================================
+// Browns and beiges
+// ==========================================================
+
+$chocolate-brown: hsla(23, 29%, 34%, 1); // #70513E
+$caramel-brown: hsla(23, 30%, 38%, 1); // #7D5943
+$leather-brown: hsla(23, 46%, 43%, 1); // #9F613B
+$rose-brown: hsla(14, 26%, 53%, 1); // #A67566
+$caramel-beige: hsla(23, 40%, 56%, 1); // #BC8664
+$rose-beige: hsla(0, 22%, 70%, 1); // #C3A2A2
+$sand-beige: hsla(16, 45%, 74%, 1); // #DBB0A0
+
+// ==========================================================
+// Blue and purple
+// ==========================================================
+
+$midnight-blue: hsla(230, 100%, 9%, 1); // #000830
+$navy-blue: hsla(234, 100%, 17%, 1); // #000857
+$dark-indigo: hsla(241, 74%, 30%, 1); // #161485
+$dark-electric-blue: hsla(234, 100%, 31%, 1); // #000F9E
+$charcoal-purple: hsla(258, 23%, 17%, 1); // #282236
+$intense-purple: hsla(266, 100%, 64%, 1); // #9747FF
+$cyan: hsla(189, 100%, 43%, 1); // #00B8D9
+
+// ==========================================================
+// Green
+// ==========================================================
+
+$forest-green: hsla(164, 35%, 21%, 1); // #22473D
+$sage-green: hsla(125, 24%, 40%, 1); // #4D7E51
+$grass-green: hsla(125, 34%, 45%, 1); // #4B9951
+
+// ==========================================================
+// Yellow and gold
+// ==========================================================
+
+$antique-gold: hsla(44, 76%, 55%, 1); // #E4B535
+$golden-yellow: hsla(48, 100%, 50%, 1); // #FFCC00
+
+// ==========================================================
+// Typography
+// ==========================================================
+
 $font-montserrat: 'Montserrat', sans-serif;
 $font-sora: 'Sora', sans-serif;
 $font-lexend: 'Lexend', sans-serif;
 
-// breakpoints
+// ==========================================================
+// Breakpoints
+// ==========================================================
+
 $breakpoints: (
         sm: 576px,
         md: 750px,
