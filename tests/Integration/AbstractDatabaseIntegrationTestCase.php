@@ -8,6 +8,7 @@ use App\BDD\DbConnection;
 use App\BDD\DbManager;
 use App\enums\DevisFormStatutEnum;
 use App\enums\DevisFormTypeEnum;
+use App\enums\OptionTypeEnum;
 use PDO;
 use PHPUnit\Framework\TestCase;
 require __DIR__ . '/configIntegration.php';
@@ -128,14 +129,18 @@ abstract class AbstractDatabaseIntegrationTestCase extends TestCase
         return $email;
     }
 
-    protected function insertRawOption(string $nom, float $nbJourHomme = 1.0): int
-    {
+    protected function insertRawOption(
+        string $nom,
+        float $nbJourHomme = 1.0,
+        OptionTypeEnum $type = OptionTypeEnum::vitrine
+    ): int {
         $stmt = $this->pdo->prepare(
-            'INSERT INTO `OPTION` (nom, nbJourHomme) VALUES (:nom, :nbJourHomme)'
+            'INSERT INTO `OPTION` (nom, nbJourHomme, type) VALUES (:nom, :nbJourHomme, :type)'
         );
         $stmt->execute([
             'nom' => $nom,
             'nbJourHomme' => $nbJourHomme,
+            'type' => $type->value,
         ]);
 
         $idOption = (int) $this->pdo->lastInsertId();

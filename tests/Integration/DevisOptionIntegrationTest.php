@@ -7,6 +7,7 @@ namespace Tests\Integration;
 use App\BDD\DbManager;
 use App\BDD\entity\OptionEntity;
 use App\BDD\exception\DatabaseWriteException;
+use App\enums\OptionTypeEnum;
 use PDO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -57,7 +58,13 @@ final class DevisOptionIntegrationTest extends AbstractDatabaseIntegrationTestCa
 
         $this->dbManager->insertDevisOption(
             $idDevis,
-            new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, nbAttribut: $compteur, idOption: $idOption)
+            new OptionEntity(
+                nom: 'ignoré',
+                nbJourHomme: 1.0,
+                type: OptionTypeEnum::vitrine,
+                nbAttribut: $compteur,
+                idOption: $idOption
+            )
         );
 
         $stmt = $this->pdo->prepare('SELECT compteur FROM `DEVIS_OPTION` WHERE idDevis = :d AND idOption = :o');
@@ -100,7 +107,7 @@ final class DevisOptionIntegrationTest extends AbstractDatabaseIntegrationTestCa
         $idDevis = $this->insertRawDevisForm($email);
         $idOption = $this->insertRawOption($this->uniqueOptionNom('do-dup'), 1.0);
 
-        $option = new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, idOption: $idOption);
+        $option = new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, type: OptionTypeEnum::vitrine, idOption: $idOption);
 
         $this->dbManager->insertDevisOption($idDevis, $option);
 
@@ -143,7 +150,7 @@ final class DevisOptionIntegrationTest extends AbstractDatabaseIntegrationTestCa
         try {
             $this->dbManager->insertDevisOption(
                 $nonExistentIdDevis,
-                new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, idOption: $idOption)
+                new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, type: OptionTypeEnum::vitrine, idOption: $idOption)
             );
         } finally {
             $count = $this->countRows(
@@ -171,7 +178,12 @@ final class DevisOptionIntegrationTest extends AbstractDatabaseIntegrationTestCa
         try {
             $this->dbManager->insertDevisOption(
                 $idDevis,
-                new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, idOption: $nonExistentIdOption)
+                new OptionEntity(
+                    nom: 'ignoré',
+                    nbJourHomme: 1.0,
+                    type: OptionTypeEnum::vitrine,
+                    idOption: $nonExistentIdOption
+                )
             );
         } finally {
             $count = $this->countRows(
@@ -214,7 +226,7 @@ final class DevisOptionIntegrationTest extends AbstractDatabaseIntegrationTestCa
 
         $this->dbManager->insertDevisOption(
             $idDevis,
-            new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, idOption: 99999)
+            new OptionEntity(nom: 'ignoré', nbJourHomme: 1.0, type: OptionTypeEnum::vitrine, idOption: 99999)
         );
     }
 

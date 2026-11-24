@@ -2,6 +2,7 @@
 
 namespace App\BDD\entity;
 
+use App\enums\OptionTypeEnum;
 use InvalidArgumentException;
 
 /**
@@ -20,6 +21,7 @@ class OptionEntity
     private string $nom;            // varchar(50)
     private float $nbJourHomme;     // decimal(15,2)
     private int|null $nbAttribut;   // représente le nombre de pages/attribut sur lequel l'option porte / int
+    private OptionTypeEnum $type;   // enum('webApp','commerce','vitrine','transversal')
     #endregion
 
     #region Constructor
@@ -32,13 +34,15 @@ class OptionEntity
      * @param string $nom nom de l'option
      * @param int|null $nbAttribut nombre d'attributs
      * @param float $nbJourHomme nombre de jours homme facturé pour l'option
+     * @param OptionTypeEnum $type type sur lequel l'option se porte
      * @throws InvalidArgumentException si le nombre de jour homme n'est pas un décimal (15,2)
      *  positif, que le nom est vide ou supperieur à 50 caractères
      */
-    public function __construct(string $nom,
-                                float $nbJourHomme,
-                                ?int $nbAttribut = null,
-                                ?int $idOption = null)
+    public function __construct(string         $nom,
+                                float          $nbJourHomme,
+                                OptionTypeEnum $type,
+                                ?int           $nbAttribut = null,
+                                ?int           $idOption = null)
     {
         // test des différentes valeurs
         self::assertNbJourHommeIsValid($nbJourHomme);
@@ -48,6 +52,7 @@ class OptionEntity
         $this->nom = $nom;
         $this->nbJourHomme = $nbJourHomme;
         $this->nbAttribut = $nbAttribut;
+        $this->type = $type;
     }
 
     #endregion
@@ -127,7 +132,23 @@ class OptionEntity
         $this->nbAttribut = $nbAttribut;
     }
 
+    /**
+     * Récupère le type de l'option
+     * @return OptionTypeEnum Le type de l'option ('webApp','commerce','vitrine','transversal') de type enum
+     */
+    public function getType(): OptionTypeEnum
+    {
+        return $this->type;
+    }
 
+    /**
+     * Définit le type de l'option
+     * @param OptionTypeEnum $type Le type de l'option ('webApp','commerce','vitrine','transversal') de type enum
+     */
+    public function setType(OptionTypeEnum $type): void
+    {
+        $this->type = $type;
+    }
 
     #endregion
 
@@ -141,17 +162,19 @@ class OptionEntity
      * @param float $deci Valeur à tester
      */
     private static function assertIsDecimal(
-        int $avantVirgule,
-        int $apresVirgule,
+        int   $avantVirgule,
+        int   $apresVirgule,
         float $deci
-    ): bool {
+    ): bool
+    {
         $maximum = pow(10, $avantVirgule) - pow(10, -$apresVirgule);
 
         return abs($deci) <= $maximum
             && abs($deci - round($deci, $apresVirgule)) < PHP_FLOAT_EPSILON;
     }
 
-    private static function assertNbJourHommeIsValid(float $nbJourHomme): void {
+    private static function assertNbJourHommeIsValid(float $nbJourHomme): void
+    {
         // Test si nbJourHomme est positif et rentre dans un decimal(15,2)
         if ($nbJourHomme <= 0
             || !self::assertIsDecimal(OptionEntity::NBJOUR_LENGTH - OptionEntity::NBJOUR_DECI,
@@ -165,10 +188,11 @@ class OptionEntity
         }
     }
 
-    private static function assertNomIsValid(string $nom): void {
+    private static function assertNomIsValid(string $nom): void
+    {
         // Test si le nom n'est pas vide est qu'il rentre en varchar(50)
         if (trim($nom) === ''
-                || mb_strlen($nom, 'UTF-8') > OptionEntity::NOM_LENGTH) {
+            || mb_strlen($nom, 'UTF-8') > OptionEntity::NOM_LENGTH) {
             throw new InvalidArgumentException(sprintf(
                 "nom invalide, vide ou supérieur à %d caractères.",
                 self::NOM_LENGTH

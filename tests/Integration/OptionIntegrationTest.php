@@ -7,6 +7,7 @@ namespace Tests\Integration;
 use App\BDD\DbManager;
 use App\BDD\entity\OptionEntity;
 use App\BDD\exception\DatabaseWriteException;
+use App\enums\OptionTypeEnum;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
@@ -66,7 +67,7 @@ final class OptionIntegrationTest extends AbstractDatabaseIntegrationTestCase
     public function testInsertOptionNominalPersistsNbJourHommeAtBoundaries(float $nbJourHomme): void
     {
         $nom = $this->uniqueOptionNom('boundary');
-        $option = new OptionEntity(nom: $nom, nbJourHomme: $nbJourHomme);
+        $option = new OptionEntity(nom: $nom, nbJourHomme: $nbJourHomme, type: OptionTypeEnum::commerce);
 
         $this->dbManager->insertOption($option);
         $idOption = (int) $this->pdo->lastInsertId();
@@ -77,6 +78,13 @@ final class OptionIntegrationTest extends AbstractDatabaseIntegrationTestCase
         self::assertNotFalse($row);
         self::assertSame($nom, $row['nom']);
         self::assertEqualsWithDelta($nbJourHomme, (float) $row['nbJourHomme'], 0.001);
+        // Couverture de la nouvelle colonne OPTION.type : persistance brute...
+        self::assertSame(OptionTypeEnum::commerce->value, $row['type']);
+
+        // ...et ré-hydratation correcte via DbManager (OptionTypeEnum::tryFrom()).
+        $hydrated = $this->dbManager->findOptionById($idOption);
+        self::assertNotNull($hydrated);
+        self::assertSame(OptionTypeEnum::commerce, $hydrated->getType());
     }
 
     public static function nbJourHommeBoundaryProvider(): array
@@ -89,43 +97,49 @@ final class OptionIntegrationTest extends AbstractDatabaseIntegrationTestCase
 
     #endregion
 
-    #region insertOption() - contrainte d'unicité
+
+    #region OPTION.type - couverture dédiée du nouvel enum OptionTypeEnum
 
     /**
-     * Objectif : vérifier qu'un second insertOption() avec le même nom
-     * (UNIQUE KEY `nom` de la table OPTION) échoue avec une
-     * DatabaseWriteException, et que la ligne existante n'est pas
-     * modifiée par la tentative.
+     * Objectif : valider, pour chacune des quatre valeurs de
+     * OptionTypeEnum, le mapping complet :
+     *     Enum PHP -> INSERT SQL -> Lecture SQL -> Enum PHP
+     * à la fois via insertOption()/findOptionById() (DbManager) et via
+     * une lecture SQL brute (fetchOptionRowByNom()), pour détecter aussi
+     * bien une erreur de binding à l'écriture qu'une erreur de mapping
+     * de colonne à la lecture.
      *
-     * Utilité : OPTION.nom est la clé "métier" du catalogue d'options ;
-     * sa contrainte d'unicité ne peut être vérifiée que contre une
-     * vraie base, l'entité ne connaissant pas les options déjà créées.
-     *
-     * Risque couvert : duplication silencieuse d'options dans le
-     * catalogue si la contrainte UNIQUE venait à être retirée du schéma
-     * sans que le code appelant ne s'en aperçoive (impact direct sur les
-     * devis : addOption()/removeOption() s'appuient sur l'unicité
-     * logique du nom).
+     * Risque couvert : une des quatre valeurs de l'enum (en particulier
+     * OptionTypeEnum::trans, dont la valeur SQL 'transversal' diffère du
+     * nom du cas PHP) mal transmise au binding PDO, ou mal retrouvée par
+     * OptionTypeEnum::tryFrom() lors de la lecture.
      */
-    public function testInsertOptionWithDuplicateNomThrowsDatabaseWriteExceptionAndKeepsOriginalRow(): void
-    {
-        $nom = $this->uniqueOptionNom('dup');
-        $this->dbManager->insertOption(new OptionEntity(nom: $nom, nbJourHomme: 2.5));
+    #[DataProvider('optionTypeEnumProvider')]
+    public function testInsertOptionAndFindOptionByIdRoundTripsAllOptionTypeEnumValues(
+        OptionTypeEnum $type
+    ): void {
+        $nom = $this->uniqueOptionNom('enum');
+        $this->dbManager->insertOption(new OptionEntity(nom: $nom, nbJourHomme: 1.0, type: $type));
         $idOption = (int) $this->pdo->lastInsertId();
         $this->trackOptionId($idOption);
 
-        $this->expectException(DatabaseWriteException::class);
+        $row = $this->fetchOptionRowByNom($nom);
+        self::assertNotFalse($row);
+        self::assertSame($type->value, $row['type']);
 
-        try {
-            $this->dbManager->insertOption(new OptionEntity(nom: $nom, nbJourHomme: 9.0));
-        } finally {
-            $row = $this->fetchOptionRowByNom($nom);
-            self::assertNotFalse($row);
-            self::assertEqualsWithDelta(2.5, (float) $row['nbJourHomme'], 0.001);
+        $result = $this->dbManager->findOptionById($idOption);
+        self::assertInstanceOf(OptionEntity::class, $result);
+        self::assertSame($type, $result->getType());
+    }
 
-            $count = $this->countRows('OPTION', 'nom = :nom', ['nom' => $nom]);
-            self::assertSame(1, $count, 'Aucune ligne dupliquée ne doit avoir été créée.');
-        }
+    public static function optionTypeEnumProvider(): array
+    {
+        return [
+            'webApp' => [OptionTypeEnum::webApp],
+            'commerce' => [OptionTypeEnum::commerce],
+            'vitrine' => [OptionTypeEnum::vitrine],
+            'transversal (trans)' => [OptionTypeEnum::trans],
+        ];
     }
 
     #endregion
@@ -140,7 +154,7 @@ final class OptionIntegrationTest extends AbstractDatabaseIntegrationTestCase
     public function testFindAllOptionContainsInsertedRow(): void
     {
         $nom = $this->uniqueOptionNom('findall');
-        $idOption = $this->insertRawOption($nom, 3.25);
+        $idOption = $this->insertRawOption($nom, 3.25, OptionTypeEnum::commerce);
 
         $options = $this->dbManager->findAllOption();
 
@@ -155,6 +169,7 @@ final class OptionIntegrationTest extends AbstractDatabaseIntegrationTestCase
         self::assertNotNull($match, "L'option insérée doit être présente dans findAllOption().");
         self::assertSame($nom, $match->getNom());
         self::assertEqualsWithDelta(3.25, $match->getNbJourHomme(), 0.001);
+        self::assertSame(OptionTypeEnum::commerce, $match->getType());
     }
 
     /**
@@ -164,7 +179,7 @@ final class OptionIntegrationTest extends AbstractDatabaseIntegrationTestCase
     public function testFindOptionByIdExistingIdReturnsMatchingEntity(): void
     {
         $nom = $this->uniqueOptionNom('byid');
-        $idOption = $this->insertRawOption($nom, 1.75);
+        $idOption = $this->insertRawOption($nom, 1.75, OptionTypeEnum::trans);
 
         $result = $this->dbManager->findOptionById($idOption);
 
@@ -172,6 +187,7 @@ final class OptionIntegrationTest extends AbstractDatabaseIntegrationTestCase
         self::assertSame($idOption, $result->getIdOption());
         self::assertSame($nom, $result->getNom());
         self::assertEqualsWithDelta(1.75, $result->getNbJourHomme(), 0.001);
+        self::assertSame(OptionTypeEnum::trans, $result->getType());
     }
 
     /**

@@ -9,6 +9,7 @@ use App\BDD\entity\OptionEntity;
 use App\BDD\entity\PersonneEntity;
 use App\enums\DevisFormStatutEnum;
 use App\enums\DevisFormTypeEnum;
+use App\enums\OptionTypeEnum;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -95,8 +96,8 @@ final class DevisFormEntityTest extends TestCase
 
     public function testConstructorPopulatesOptionsFromArray(): void
     {
-        $option1 = new OptionEntity(nom: 'Hébergement', nbJourHomme: 1.0, idOption: 1);
-        $option2 = new OptionEntity(nom: 'Maintenance', nbJourHomme: 2.0, idOption: 2);
+        $option1 = new OptionEntity(nom: 'Hébergement', nbJourHomme: 1.0, type:OptionTypeEnum::commerce, idOption: 1);
+        $option2 = new OptionEntity(nom: 'Maintenance', nbJourHomme: 2.0, type:OptionTypeEnum::vitrine, idOption: 2);
 
         $devis = $this->createDevis(options: [$option1, $option2]);
 
@@ -230,7 +231,7 @@ final class DevisFormEntityTest extends TestCase
     public function testAddOptionAppendsToOptionsList(): void
     {
         $devis = $this->createDevis();
-        $option = new OptionEntity(nom: 'Hébergement', nbJourHomme: 1.0, idOption: 1);
+        $option = new OptionEntity(nom: 'Hébergement', type:OptionTypeEnum::commerce, nbJourHomme: 1.0, idOption: 1);
 
         $devis->addOption($option);
 
@@ -240,8 +241,8 @@ final class DevisFormEntityTest extends TestCase
     public function testAddOptionCanBeCalledMultipleTimes(): void
     {
         $devis = $this->createDevis();
-        $option1 = new OptionEntity(nom: 'Hébergement', nbJourHomme: 1.0, idOption: 1);
-        $option2 = new OptionEntity(nom: 'Maintenance', nbJourHomme: 2.0, idOption: 2);
+        $option1 = new OptionEntity(nom: 'Hébergement', type:OptionTypeEnum::commerce, nbJourHomme: 1.0, idOption: 1);
+        $option2 = new OptionEntity(nom: 'Maintenance', type:OptionTypeEnum::trans, nbJourHomme: 2.0, idOption: 2);
 
         $devis->addOption($option1);
         $devis->addOption($option2);
@@ -253,8 +254,8 @@ final class DevisFormEntityTest extends TestCase
     public function testRemoveOptionRemovesMatchingOptionByIdOption(): void
     {
         $devis = $this->createDevis();
-        $option1 = new OptionEntity(nom: 'Hébergement', nbJourHomme: 1.0, idOption: 1);
-        $option2 = new OptionEntity(nom: 'Maintenance', nbJourHomme: 2.0, idOption: 2);
+        $option1 = new OptionEntity(nom: 'Hébergement', type:OptionTypeEnum::commerce, nbJourHomme: 1.0, idOption: 1);
+        $option2 = new OptionEntity(nom: 'Maintenance', type:OptionTypeEnum::webApp, nbJourHomme: 2.0, idOption: 2);
         $devis->addOption($option1);
         $devis->addOption($option2);
 
@@ -268,10 +269,10 @@ final class DevisFormEntityTest extends TestCase
         // removeOption() compare par getIdOption(), pas par identité d'objet : une
         // instance différente mais partageant le même idOption doit donc matcher.
         $devis = $this->createDevis();
-        $original = new OptionEntity(nom: 'Hébergement', nbJourHomme: 1.0, idOption: 1);
+        $original = new OptionEntity(nom: 'Hébergement', type:OptionTypeEnum::commerce, nbJourHomme: 1.0, idOption: 1);
         $devis->addOption($original);
 
-        $copieAvecMemeId = new OptionEntity(nom: 'Hébergement (copie)', nbJourHomme: 9.0, idOption: 1);
+        $copieAvecMemeId = new OptionEntity(nom: 'Hébergement (copie)', type:OptionTypeEnum::webApp, nbJourHomme: 9.0, idOption: 1);
         $devis->removeOption($copieAvecMemeId);
 
         self::assertSame([], $devis->getOptions());
@@ -280,9 +281,9 @@ final class DevisFormEntityTest extends TestCase
     public function testRemoveOptionReindexesRemainingOptions(): void
     {
         $devis = $this->createDevis();
-        $option1 = new OptionEntity(nom: 'Option 1', nbJourHomme: 1.0, idOption: 1);
-        $option2 = new OptionEntity(nom: 'Option 2', nbJourHomme: 2.0, idOption: 2);
-        $option3 = new OptionEntity(nom: 'Option 3', nbJourHomme: 3.0, idOption: 3);
+        $option1 = new OptionEntity(nom: 'Option 1', type:OptionTypeEnum::commerce, nbJourHomme: 1.0, idOption: 1);
+        $option2 = new OptionEntity(nom: 'Option 2', type:OptionTypeEnum::webApp, nbJourHomme: 2.0, idOption: 2);
+        $option3 = new OptionEntity(nom: 'Option 3', type:OptionTypeEnum::trans, nbJourHomme: 3.0, idOption: 3);
         $devis->addOption($option1);
         $devis->addOption($option2);
         $devis->addOption($option3);
@@ -295,10 +296,10 @@ final class DevisFormEntityTest extends TestCase
     public function testRemoveOptionThrowsWhenOptionDoesNotExist(): void
     {
         $devis = $this->createDevis();
-        $option = new OptionEntity(nom: 'Hébergement', nbJourHomme: 1.0, idOption: 1);
+        $option = new OptionEntity(nom: 'Hébergement', type:OptionTypeEnum::commerce, nbJourHomme: 1.0, idOption: 1);
         $devis->addOption($option);
 
-        $inconnue = new OptionEntity(nom: 'Inconnue', nbJourHomme: 1.0, idOption: 999);
+        $inconnue = new OptionEntity(nom: 'Inconnue', type:OptionTypeEnum::vitrine, nbJourHomme: 1.0, idOption: 999);
 
         $this->expectException(InvalidArgumentException::class);
 
@@ -308,7 +309,7 @@ final class DevisFormEntityTest extends TestCase
     public function testRemoveOptionThrowsWhenOptionsListIsEmpty(): void
     {
         $devis = $this->createDevis();
-        $option = new OptionEntity(nom: 'Option', nbJourHomme: 1.0, idOption: 1);
+        $option = new OptionEntity(nom: 'Option', type:OptionTypeEnum::commerce, nbJourHomme: 1.0, idOption: 1);
 
         $this->expectException(InvalidArgumentException::class);
 
@@ -322,8 +323,8 @@ final class DevisFormEntityTest extends TestCase
         // fait sur getIdOption(). La première option de la liste ayant un id "null"
         // correspondant est donc retirée, même si une autre instance a été passée.
         $devis = $this->createDevis();
-        $nonPersistee1 = new OptionEntity(nom: 'Option A', nbJourHomme: 1.0);
-        $nonPersistee2 = new OptionEntity(nom: 'Option B', nbJourHomme: 2.0);
+        $nonPersistee1 = new OptionEntity(nom: 'Option A', type:OptionTypeEnum::commerce, nbJourHomme: 1.0);
+        $nonPersistee2 = new OptionEntity(nom: 'Option B', type:OptionTypeEnum::vitrine, nbJourHomme: 2.0);
         $devis->addOption($nonPersistee1);
         $devis->addOption($nonPersistee2);
 

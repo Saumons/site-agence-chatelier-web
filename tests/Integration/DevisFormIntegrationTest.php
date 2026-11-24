@@ -11,6 +11,7 @@ use App\BDD\entity\PersonneEntity;
 use App\BDD\exception\DatabaseWriteException;
 use App\enums\DevisFormStatutEnum;
 use App\enums\DevisFormTypeEnum;
+use App\enums\OptionTypeEnum;
 use PDO;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Group;
@@ -72,8 +73,20 @@ final class DevisFormIntegrationTest extends AbstractDatabaseIntegrationTestCase
                 estMorale: true
             ),
             options: [
-                new OptionEntity(nom: 'ignoré-option1', nbJourHomme: 1.0, nbAttribut: 3, idOption: $idOption1),
-                new OptionEntity(nom: 'ignoré-option2', nbJourHomme: 1.0, nbAttribut: null, idOption: $idOption2),
+                new OptionEntity(
+                    nom: 'ignoré-option1',
+                    nbJourHomme: 1.0,
+                    type: OptionTypeEnum::vitrine,
+                    nbAttribut: 3,
+                    idOption: $idOption1
+                ),
+                new OptionEntity(
+                    nom: 'ignoré-option2',
+                    nbJourHomme: 1.0,
+                    type: OptionTypeEnum::vitrine,
+                    nbAttribut: null,
+                    idOption: $idOption2
+                ),
             ]
         );
 
@@ -310,7 +323,12 @@ final class DevisFormIntegrationTest extends AbstractDatabaseIntegrationTestCase
     public function testInsertDevisFormLeavesTransactionOpenWhenOptionInsertionFails(): void
     {
         $email = $this->uniqueEmail('devis-rollback');
-        $invalidOption = new OptionEntity(nom: 'inexistante', nbJourHomme: 1.0, idOption: 999999);
+        $invalidOption = new OptionEntity(
+            nom: 'inexistante',
+            nbJourHomme: 1.0,
+            type: OptionTypeEnum::vitrine,
+            idOption: 999999
+        );
 
         $devisForm = new DevisFormEntity(
             type: DevisFormTypeEnum::vitrine,
@@ -378,8 +396,8 @@ final class DevisFormIntegrationTest extends AbstractDatabaseIntegrationTestCase
     {
         $email = $this->insertRawPersonne(email: $this->uniqueEmail('findall-devis'));
         $idDevis = $this->insertRawDevisForm($email, nomProjet: 'Projet Findall');
-        $idOption1 = $this->insertRawOption($this->uniqueOptionNom('agg1'), 1.0);
-        $idOption2 = $this->insertRawOption($this->uniqueOptionNom('agg2'), 2.0);
+        $idOption1 = $this->insertRawOption($this->uniqueOptionNom('agg1'), 1.0, OptionTypeEnum::webApp);
+        $idOption2 = $this->insertRawOption($this->uniqueOptionNom('agg2'), 2.0, OptionTypeEnum::trans);
         $this->insertRawDevisOption($idDevis, $idOption1, 5);
         $this->insertRawDevisOption($idDevis, $idOption2, null);
 
@@ -396,6 +414,16 @@ final class DevisFormIntegrationTest extends AbstractDatabaseIntegrationTestCase
         );
         sort($nbAttributs);
         self::assertSame([null, 5], $nbAttributs);
+
+        // Couverture OPTION.type : chaque option du devis doit être
+        // hydratée avec le bon OptionTypeEnum (et non une valeur par
+        // défaut ou celle d'une autre option agrégée par erreur).
+        $typesById = [];
+        foreach ($match->getOptions() as $option) {
+            $typesById[$option->getIdOption()] = $option->getType();
+        }
+        self::assertSame(OptionTypeEnum::webApp, $typesById[$idOption1]);
+        self::assertSame(OptionTypeEnum::trans, $typesById[$idOption2]);
     }
 
     /**
@@ -436,7 +464,7 @@ final class DevisFormIntegrationTest extends AbstractDatabaseIntegrationTestCase
             statut: DevisFormStatutEnum::annule,
             infoComplementaire: 'Info'
         );
-        $idOption = $this->insertRawOption($this->uniqueOptionNom('byid-opt'), 4.0);
+        $idOption = $this->insertRawOption($this->uniqueOptionNom('byid-opt'), 4.0, OptionTypeEnum::commerce);
         $this->insertRawDevisOption($idDevis, $idOption, 2);
 
         $result = $this->dbManager->findDevisFormById($idDevis);
@@ -449,6 +477,60 @@ final class DevisFormIntegrationTest extends AbstractDatabaseIntegrationTestCase
         self::assertSame($email, $result->getPersonne()->getMail());
         self::assertCount(1, $result->getOptions());
         self::assertSame(2, $result->getOptions()[0]->getNbAttribut());
+        // Couverture OPTION.type sur findDevisFormById() : l'option
+        // jointe doit porter l'OptionTypeEnum réellement persisté
+        // (et pas celui, différent, du DEVIS_FORM lui-même).
+        self::assertSame(OptionTypeEnum::commerce, $result->getOptions()[0]->getType());
+    }
+
+    /**
+     * Objectif : valider spécifiquement le pipeline d'hydratation du
+     * type d'option au travers du LEFT JOIN `OPTION` de
+     * findDevisFormById() :
+     *     OPTION.type -> LEFT JOIN -> OptionTypeEnum::tryFrom() -> OptionEntity
+     * pour chacune des quatre valeurs de l'enum, sur un seul devis
+     * portant une option de chaque type.
+     *
+     * Risque couvert : confusion entre l'alias `o.type AS typeOption`
+     * (utilisé pour l'option jointe) et la colonne `df.type` du devis
+     * lui-même (ramenée sans alias par `df.*`), qui pourrait faire lire
+     * par erreur le type du devis à la place de celui de l'option, ou
+     * inversement - ce qui ne serait pas détecté si le devis et son
+     * unique option partageaient la même valeur de type.
+     */
+    public function testFindDevisFormByIdHydratesOptionTypeForEachOptionTypeEnumValue(): void
+    {
+        $email = $this->insertRawPersonne(email: $this->uniqueEmail('byid-devis-types'));
+        // Le DEVIS_FORM porte un type volontairement différent de toutes
+        // les options, pour détecter une confusion entre df.type et
+        // o.type AS typeOption.
+        $idDevis = $this->insertRawDevisForm($email, type: DevisFormTypeEnum::webApp, nomProjet: 'Projet multi-types');
+
+        $expectedTypesByOptionId = [];
+        foreach (OptionTypeEnum::cases() as $type) {
+            $idOption = $this->insertRawOption($this->uniqueOptionNom('byid-types'), 1.0, $type);
+            $this->insertRawDevisOption($idDevis, $idOption, null);
+            $expectedTypesByOptionId[$idOption] = $type;
+        }
+
+        $result = $this->dbManager->findDevisFormById($idDevis);
+
+        self::assertNotNull($result);
+        self::assertSame(DevisFormTypeEnum::webApp, $result->getType());
+        self::assertCount(4, $result->getOptions());
+
+        foreach ($result->getOptions() as $option) {
+            self::assertArrayHasKey(
+                $option->getIdOption(),
+                $expectedTypesByOptionId,
+                'Option inattendue renvoyée pour ce devis.'
+            );
+            self::assertSame(
+                $expectedTypesByOptionId[$option->getIdOption()],
+                $option->getType(),
+                sprintf("Type incorrect hydraté pour l'option id:%d.", $option->getIdOption())
+            );
+        }
     }
 
     /**
