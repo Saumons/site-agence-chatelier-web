@@ -1,0 +1,288 @@
+@use "sass:map";
+@use '../abstracts' as *;
+
+// ============================================================================
+// Page "Nos Services"
+// ============================================================================
+
+// ----------------------------------------------------------------------------
+// Helper breakpoints
+// Uniformise l'accès à la map $breakpoints dans tout le fichier
+// ----------------------------------------------------------------------------
+@function bp($name) {
+  @return map.get($breakpoints, $name);
+}
+
+// ----------------------------------------------------------------------------
+// Variables "page"
+// ----------------------------------------------------------------------------
+$services-accent: $antique-gold;
+$services-text:   $grey-minus-23;
+
+// ----------------------------------------------------------------------------
+// Variable "packages"
+// ----------------------------------------------------------------------------
+$packages-card-bg:     $grey-4;
+$packages-card-border: $color-dark;
+$packages-card-shadow: $grey-minus-18;
+$packages-card-radius: 1rem;
+
+// ----------------------------------------------------------------------------
+// Variable "maintenance"
+// ----------------------------------------------------------------------------
+// Couleurs maintenance (mappées sur la palette projet, accent partagé avec les formules)
+$maintenance-table-border:    $grey-2;   // bordure discrète entre les lignes
+$maintenance-table-bg:        $grey-4;   // fond des lignes (blanc)
+$maintenance-table-head-bg:   $color-dark; // en-tête : couleur sombre de marque
+$maintenance-table-head-text: $grey-4;   // texte d'en-tête, contraste max sur fond sombre
+
+// Espacements — mobile first
+$maintenance-table-spacing-y-xs: 0.625rem;
+$maintenance-table-spacing-x-xs: 0.6rem;
+$maintenance-table-spacing-y-md: 1rem;
+$maintenance-table-spacing-x-md: 1.25rem;
+$maintenance-table-spacing-y-lg: 1.25rem;
+$maintenance-table-spacing-x-lg: 1.5rem;
+
+// Rayon et bordures
+$maintenance-table-radius: 8px;
+$maintenance-table-border-width: 1px;
+
+// Largeur minimale avant déclenchement du scroll horizontal : assez large
+// pour rester lisible sur 4 colonnes, assez étroite pour tenir sur un
+// écran de 360-375px sans forcer un scroll inutile.
+$maintenance-table-min-width: 440px;
+
+// Accessibilité : certains visiteurs préfèrent limiter les animations.
+// On neutralise les transitions/transform décoratives dans ce cas.
+@media (prefers-reduced-motion: reduce) {
+  .packages__card-service,
+  .card-service__cta {
+    transition: none !important;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// 1. Intro de page
+// ----------------------------------------------------------------------------
+.main__intro {
+  box-sizing: border-box;
+  max-width: 65ch; // confort de lecture, évite les lignes trop longues sur grand écran
+  margin: 0 auto;
+  padding-bottom: 1rem;
+  font-family: $font-lexend;
+  color: $services-text;
+  line-height: 1.5;
+  text-align: center;
+
+  @media (min-width: bp(md)) {
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+}
+
+// ----------------------------------------------------------------------------
+// 2. Formules (cartes de services)
+// ----------------------------------------------------------------------------
+
+.main__packages {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  // À partir de la tablette, passage en grille : auto-fit évite d'avoir à
+  // gérer "2 colonnes puis 3 colonnes" avec des breakpoints spécifiques,
+  // et empêche une carte isolée de se retrouver seule sur sa ligne.
+  @media (min-width: bp(md)) {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  @media (min-width: bp(lg)) {
+    gap: 2rem;
+  }
+
+  .packages__card-service {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    height: 100%; // garde toutes les cartes alignées sur la même hauteur en grid
+    box-sizing: border-box;
+    padding: 1.25rem;
+    background-color: $packages-card-bg;
+    border: 1px solid $packages-card-border;
+    border-radius: $packages-card-radius;
+    box-shadow: 3px 3px 12px $packages-card-shadow;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+    // Léger effet de "levée" au survol, cohérent avec le hover des lignes
+    // du tableau plus bas : même logique d'interaction sur toute la page.
+    &:hover {
+      box-shadow: 5px 8px 18px $packages-card-shadow;
+      transform: translateY(-4px);
+    }
+
+    .card-service__title {
+      margin: 0;
+      font-family: $font-sora;
+      font-size: 1.25rem;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .card-service__description {
+      margin: 0;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: $services-text;
+      text-align: center;
+    }
+
+    .card-service__features {
+      // flex-grow : pousse prix + CTA en bas de carte même si les listes
+      // n'ont pas toutes le même nombre d'éléments
+      flex-grow: 1;
+      margin: 0;
+      padding: 0 0 0 1.1rem;
+      list-style: disc;
+      font-size: 0.875rem;
+      line-height: 1.6;
+
+      li::marker {
+        color: $services-accent;
+      }
+
+      .card-service__subtitle {
+        // Le <h4> est un enfant direct du <ul> (pas un <li>) : il n'hérite
+        // d'aucune puce, mais hérite du padding-left du <ul>. On le
+        // recale donc à gauche pour qu'il ne paraisse pas indenté.
+        margin: 0 0 0.5rem -1.1rem;
+        font-weight: 700;
+      }
+    }
+
+    .card-service__price {
+      margin: 0;
+      font-size: 1.05rem;
+      text-align: center;
+
+      strong {
+        color: $services-accent;
+        font-size: 1.3rem;
+      }
+    }
+
+    .card-service__cta {
+      display: block;
+      box-sizing: border-box;
+      width: 100%;
+      margin-top: auto; // aligne tous les boutons en bas de carte
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.5rem;
+      background-color: $color-dark;
+      color: $grey-4;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      transition: background-color 0.2s ease, color 0.2s ease;
+
+      &:hover {
+        background-color: $services-accent;
+        color: $color-dark;
+      }
+
+      &:focus-visible {
+        outline: 2px solid $services-accent;
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+// ----------------------------------------------------------------------------
+// 3. Formules de maintenance (tableau)
+// ----------------------------------------------------------------------------
+
+
+// wrapper pour mobile quand l'écran devient trop petit
+.maintenance__table-wrapper {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%; // ceinture de sécurité si le parent impose une largeur fixe
+
+  // Empêche un parent flex/grid d'imposer un min-width: auto qui ferait
+  // déborder toute la page au lieu de scroller dans ce conteneur.
+  min-width: 0;
+
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch; // confort de scroll tactile sur iOS
+  border-radius: $maintenance-table-radius;
+
+}
+
+.maintenance__table {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: $maintenance-table-min-width;
+  border-collapse: collapse; // grille de cellules propre, sans double trait
+  background-color: $maintenance-table-bg;
+  font-family: $font-lexend;
+  font-size: 0.8125rem; // base resserrée pour les très petits écrans
+  color: $services-text;
+
+  @media (min-width: bp(md)) {
+    min-width: 0; // le tableau occupe toute la largeur disponible
+    font-size: 0.95rem;
+  }
+
+  thead th {
+    background-color: $maintenance-table-head-bg;
+    color: $maintenance-table-head-text;
+    font-family: $font-sora;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap; // volontaire : évite un en-tête qui se casse sur plusieurs lignes
+    padding: $maintenance-table-spacing-y-xs $maintenance-table-spacing-x-xs;
+    border-bottom: $maintenance-table-border-width solid $maintenance-table-head-bg;
+
+    @media (min-width: bp(md)) {
+      padding: $maintenance-table-spacing-y-md $maintenance-table-spacing-x-md;
+    }
+
+    @media (min-width: bp(lg)) {
+      padding: $maintenance-table-spacing-y-lg $maintenance-table-spacing-x-lg;
+    }
+  }
+
+  tbody {
+    tr {
+      transition: background-color 0.15s ease-in-out;
+
+      &:not(:last-child) td {
+        border-bottom: $maintenance-table-border-width solid $maintenance-table-border;
+      }
+    }
+
+    td {
+      padding: $maintenance-table-spacing-y-xs $maintenance-table-spacing-x-xs;
+      vertical-align: middle;
+      white-space: nowrap; // empêche "À partir de xx €" de se replier sur mobile
+
+      @media (min-width: bp(md)) {
+        padding: $maintenance-table-spacing-y-md $maintenance-table-spacing-x-md;
+        white-space: normal; // la largeur disponible permet de laisser le texte respirer
+      }
+
+      @media (min-width: bp(lg)) {
+        padding: $maintenance-table-spacing-y-lg $maintenance-table-spacing-x-lg;
+      }
+
+      strong {
+        color: $services-accent;
+        font-weight: 700;
+      }
+    }
+  }
+}
