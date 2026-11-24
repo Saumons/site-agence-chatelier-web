@@ -15,12 +15,14 @@ require __DIR__ . '/../templates/header.php';
         <h1 class="main__title">
             Nos Services
         </h1>
-        <p class="main__intro">Vous désirez un site vitrine, un site e-commerce ou une application web, mais vous
+        <p class="main__intro">
+            Vous désirez un site vitrine, un site e-commerce ou une application web, mais vous
             recherchez bien plus qu'un
             simple prestataire ? Chez Chat'elier Web, nous avançons avec l'agilité d'un chat, en
             construisant des solutions durables dans un atelier où confiance, transparence et écoresponsabilité sont au
             cœur de
-            chaque projet.</p>
+            chaque projet.
+        </p>
     </header>
 
     <section class="main__section">

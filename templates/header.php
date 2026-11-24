@@ -9,6 +9,9 @@
     <title><?= $pageTitle ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400&family=Montserrat:wght@300;800&family=Sora:wght@400&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <?php if($pageTitle === "Formulaire de devis"): ?>
+        <script defer type="module" src="assets/js/devis.js"></script>
+    <?php endif ?>
 </head>
 
 <body>

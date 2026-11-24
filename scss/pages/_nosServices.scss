@@ -6,14 +6,6 @@
 // ============================================================================
 
 // ----------------------------------------------------------------------------
-// Helper breakpoints
-// Uniformise l'accès à la map $breakpoints dans tout le fichier
-// ----------------------------------------------------------------------------
-@function bp($name) {
-  @return map.get($breakpoints, $name);
-}
-
-// ----------------------------------------------------------------------------
 // Variables "page"
 // ----------------------------------------------------------------------------
 $services-accent: $antique-gold;
@@ -75,7 +67,7 @@ $maintenance-table-min-width: 440px;
   line-height: 1.5;
   text-align: center;
 
-  @media (min-width: bp(md)) {
+  @media (min-width: map.get($breakpoints,md)) {
     font-size: 1.05rem;
     line-height: 1.6;
   }
@@ -93,13 +85,13 @@ $maintenance-table-min-width: 440px;
   // À partir de la tablette, passage en grille : auto-fit évite d'avoir à
   // gérer "2 colonnes puis 3 colonnes" avec des breakpoints spécifiques,
   // et empêche une carte isolée de se retrouver seule sur sa ligne.
-  @media (min-width: bp(md)) {
+  @media (min-width: map.get($breakpoints,md)) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     gap: 1.5rem;
   }
 
-  @media (min-width: bp(lg)) {
+  @media (min-width: map.get($breakpoints,lg)) {
     gap: 2rem;
   }
 
@@ -232,7 +224,7 @@ $maintenance-table-min-width: 440px;
   font-size: 0.8125rem; // base resserrée pour les très petits écrans
   color: $services-text;
 
-  @media (min-width: bp(md)) {
+  @media (min-width: map.get($breakpoints,md)) {
     min-width: 0; // le tableau occupe toute la largeur disponible
     font-size: 0.95rem;
   }
@@ -247,11 +239,11 @@ $maintenance-table-min-width: 440px;
     padding: $maintenance-table-spacing-y-xs $maintenance-table-spacing-x-xs;
     border-bottom: $maintenance-table-border-width solid $maintenance-table-head-bg;
 
-    @media (min-width: bp(md)) {
+    @media (min-width: map.get($breakpoints,md)) {
       padding: $maintenance-table-spacing-y-md $maintenance-table-spacing-x-md;
     }
 
-    @media (min-width: bp(lg)) {
+    @media (min-width: map.get($breakpoints,lg)) {
       padding: $maintenance-table-spacing-y-lg $maintenance-table-spacing-x-lg;
     }
   }
@@ -270,12 +262,12 @@ $maintenance-table-min-width: 440px;
       vertical-align: middle;
       white-space: nowrap; // empêche "À partir de xx €" de se replier sur mobile
 
-      @media (min-width: bp(md)) {
+      @media (min-width: map.get($breakpoints,md)) {
         padding: $maintenance-table-spacing-y-md $maintenance-table-spacing-x-md;
         white-space: normal; // la largeur disponible permet de laisser le texte respirer
       }
 
-      @media (min-width: bp(lg)) {
+      @media (min-width: map.get($breakpoints,lg)) {
         padding: $maintenance-table-spacing-y-lg $maintenance-table-spacing-x-lg;
       }
 
