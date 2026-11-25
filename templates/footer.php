@@ -35,7 +35,7 @@
                 <ul class="footer__social-list">
 
                     <li class="footer__social-item">
-                        <a href="#" class="footer__social-link">
+                        <a href="https://www.linkedin.com/company/chat-elier-web/home/" target="_blank" class="footer__social-link">
                             <svg class="footer__social-icon"
                                  width="48"
                                  height="48"
@@ -48,7 +48,7 @@
                     </li>
 
                     <li class="footer__social-item">
-                        <a href="#" class="footer__social-link">
+                        <a href="https://www.instagram.com/chatelierweb/" target="_blank" class="footer__social-link">
                             <svg class="footer__social-icon"
                                  width="48"
                                  height="48"
@@ -61,7 +61,7 @@
                     </li>
 
                     <li class="footer__social-item">
-                        <a href="#" class="footer__social-link">
+                        <a href="https://www.facebook.com/profile.php?id=61594531187848" target="_blank" class="footer__social-link">
                             <svg class="footer__social-icon"
                                  width="48"
                                  height="48"
@@ -84,10 +84,10 @@
             </h2>
 
             <ul class="footer__list">
-                <li class="footer__list-item"><a class="footer__list-link" href="../public/accueil.php">Accueil</a></li>
-                <li class="footer__list-item"><a class="footer__list-link" href="../public/nosEngagements.php">Engagement</a></li>
-                <li class="footer__list-item"><a class="footer__list-link" href="../public/nosRealisations">Réalisations</a></li>
-                <li class="footer__list-item"><a class="footer__list-link" href="../public/nosServices.php">Services</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="accueil">Accueil</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="nosEngagements">Engagement</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="nosRealisations">Réalisations</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="nosServices">Services</a></li>
             </ul>
         </section>
 
@@ -115,10 +115,10 @@
         </p>
 
         <ul class="footer__legal-links">
-            <li class="footer__legal-item"><a class="footer__legal-link" href="../public/mentionsLegales.php">Mentions légales</a></li>
-            <li class="footer__legal-item"><a class="footer__legal-link" href="../public/cookies.php">Cookies</a></li>
-            <li class="footer__legal-item"><a class="footer__legal-link" href="../public/nosCGU.php">CGU</a></li>
-            <li class="footer__legal-item"><a class="footer__legal-link" href="../public/politiqueDeConfidentialite.php">Politique de confidentialité</a></li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="mentionsLegales">Mentions légales</a></li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="cookies">Cookies</a></li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="nosCGU">CGU</a></li>
+            <li class="footer__legal-item"><a class="footer__legal-link" href="politiqueDeConfidentialite">Politique de confidentialité</a></li>
         </ul>
 
     </section>
