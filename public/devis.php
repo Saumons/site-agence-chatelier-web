@@ -241,9 +241,14 @@ $activeType = isset($_GET['tab']) && in_array($_GET['tab'], $projectTypes, true)
                 <aside class="quote__summary" id="quote-summary" aria-live="polite">
                     <h2 class="quote__summary-title">Votre projet en un coup d'œil</h2>
 
-                    <p class="quote__summary-level">
-                        Niveau estimé&nbsp;:
-                        <strong id="summary-level" data-level="simple">Simple</strong>
+                    <p class="quote__summary-days">
+                        Charge estimée&nbsp;:
+                        <strong id="summary-days">0 j/h</strong>
+                    </p>
+
+                    <p class="quote__summary-price">
+                        Soit environ
+                        <strong id="summary-price">0&nbsp;€</strong>
                     </p>
 
                     <ul class="quote__summary-list" id="summary-list">

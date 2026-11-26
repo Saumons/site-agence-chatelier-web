@@ -20,11 +20,6 @@ $quote-accent:   $antique-gold;
 $quote-standard: $navy-blue;
 
 
-// Couleurs du badge de niveau de complexité dans le résumé
-$quote-level-simple:   $sage-green;
-$quote-level-standard: $antique-gold;
-$quote-level-avance:   $crimson-red;
-
 // Accessibilité : certains visiteurs préfèrent limiter les animations.
 @media (prefers-reduced-motion: reduce) {
   .quote__panel,
@@ -84,9 +79,6 @@ $quote-level-avance:   $crimson-red;
       padding: 1.5rem 1.75rem;
     }
 
-    &--urgent {
-      border-style: dashed;
-    }
   }
 
   &__step-title {
@@ -135,7 +127,7 @@ $quote-level-avance:   $crimson-red;
   width: 100%;
   padding: 0.8rem 1rem;
   border: 1px solid $quote-border;
-  border-left: 4px solid transparent;
+  border-left: 4px solid $quote-standard;
   border-radius: 0.5rem;
   background-color: $quote-surface;
   color: $quote-dark;
@@ -146,12 +138,9 @@ $quote-level-avance:   $crimson-red;
   cursor: pointer;
   transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
 
-  &--vitrine   { border-left-color: $quote-standard; }
-  &--ecommerce { border-left-color: $quote-standard; }
-  &--webapp    { border-left-color: $quote-standard; }
-
   &:hover {
     transform: translateY(-2px);
+    border-left-color: $quote-accent;
   }
 
   &:focus-visible {
@@ -161,7 +150,6 @@ $quote-level-avance:   $crimson-red;
 
   &--active {
     background-color: $quote-surface-selected;
-    border-left-color: $quote-accent;
   }
 }
 
@@ -264,26 +252,6 @@ $quote-level-avance:   $crimson-red;
 }
 
 // ----------------------------------------------------------------------------
-// 4. Délai express
-// ----------------------------------------------------------------------------
-.quote__checkbox-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-family: $font-lexend;
-  font-size: 0.9rem;
-  color: $quote-text;
-  cursor: pointer;
-
-  input {
-    width: 1.15rem;
-    height: 1.15rem;
-    flex-shrink: 0;
-    accent-color: $quote-dark;
-  }
-}
-
-// ----------------------------------------------------------------------------
 // 5. Coordonnées
 // ----------------------------------------------------------------------------
 .quote__field-grid {
@@ -381,14 +349,14 @@ $quote-level-avance:   $crimson-red;
   display: block;
   padding: 0.85rem 1rem;
   border: 1px solid $quote-border;
-  border-left: 4px solid transparent;
+  border-left: 4px solid $quote-standard;
   border-radius: 0.5rem;
   background-color: $quote-surface;
   cursor: pointer;
   transition: border-color 0.2s ease, background-color 0.2s ease;
 
   &:hover {
-    border-left-color: $quote-standard;
+    border-left-color: $quote-accent;
   }
 
   // La case à cocher reste dans le flux et accessible au clavier/lecteur
@@ -405,7 +373,6 @@ $quote-level-avance:   $crimson-red;
 
   &:has(.quote__contact-type-input:checked) {
     background-color: $quote-surface-selected;
-    border-left-color: $quote-accent;
   }
 
   &:has(.quote__contact-type-input:focus-visible) {
@@ -507,7 +474,19 @@ $quote-level-avance:   $crimson-red;
     letter-spacing: 0.03em;
   }
 
-  &-level {
+  &-days {
+    margin: 0 0 0.35rem;
+    font-family: $font-lexend;
+    font-size: 0.9rem;
+
+    strong {
+      margin-left: 0.4rem;
+      font-weight: 700;
+      color: $quote-dark;
+    }
+  }
+
+  &-price {
     margin: 0 0 1rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid rgba($quote-surface, 0.2);
@@ -520,23 +499,8 @@ $quote-level-avance:   $crimson-red;
       padding: 0.15rem 0.6rem;
       border-radius: 1rem;
       font-weight: 700;
-      font-size: 0.85rem;
-      transition: background-color 0.2s ease, color 0.2s ease;
-
-      &[data-level="simple"] {
-        background-color: rgba($quote-level-simple, 0.18);
-        color: $quote-level-simple;
-      }
-
-      &[data-level="standard"] {
-        background-color: rgba($quote-level-standard, 0.2);
-        color: $quote-level-standard;
-      }
-
-      &[data-level="avance"] {
-        background-color: rgba($quote-level-avance, 0.2);
-        color: $quote-level-avance;
-      }
+      font-size: 0.95rem;
+      color: $quote-accent;
     }
   }
 

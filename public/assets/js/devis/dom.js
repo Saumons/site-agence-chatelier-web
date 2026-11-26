@@ -1,4 +1,3 @@
-
 import { PROJECT_TYPES } from './config.js';
 
 /**
@@ -11,11 +10,11 @@ export const dom = {
     tabs: document.querySelectorAll('.quote__tab'),
     projectInput: document.getElementById('project-type-input'),
     commonOptions: document.getElementById('common-options'),
-    urgentInput: document.getElementById('urgent'),
-    summaryLevel: document.getElementById('summary-level'),
+    summaryDays: document.getElementById('summary-days'),
+    summaryPrice: document.getElementById('summary-price'),
     summaryList: document.getElementById('summary-list'),
 
-    // --- Ajout : type de demandeur ---
+    // --- Type de demandeur ---
     contactTypeInputs: document.querySelectorAll('input[name="contact_type"]'),
     estMoraleInput: document.getElementById('est-morale-input'),
     contactFieldWrappers: document.querySelectorAll('[data-contact-field]'),

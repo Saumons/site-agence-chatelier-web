@@ -1,17 +1,15 @@
-
-import { LEVEL_THRESHOLDS } from './config.js';
 import { getSafeInteger } from './helper.js';
 
 /**
- * Calcule le poids global du projet.
+ * Calcule la charge globale du projet, en jours/homme.
  *
  * @param {string} projectType Type de projet.
  * @param {Object[]} options Options sélectionnées.
  * @param {number} pages Nombre de pages.
  * @param {Object} projectTypes Configuration des projets.
- * @returns {number}
+ * @returns {number} Nombre total de jours/homme.
  */
-export const calculateProjectWeight = (
+export const calculateProjectDays = (
     projectType,
     options,
     pages,
@@ -23,7 +21,7 @@ export const calculateProjectWeight = (
         return 0;
     }
 
-    let totalWeight = config.baseWeight;
+    let totalDays = config.baseWeight;
 
     if (config.pages) {
         const safePages = getSafeInteger(
@@ -38,57 +36,40 @@ export const calculateProjectWeight = (
         );
 
         if (extraPages > 0) {
-            totalWeight +=
+            totalDays +=
                 Math.ceil(extraPages / config.pages.step) *
                 config.pages.weightPerStep;
         }
     }
 
     options.forEach((option) => {
-        const weight = Number(option.weight);
+        const days = Number(option.weight);
         const quantity = getSafeInteger(option.quantity, 1, 1);
 
-        if (!Number.isFinite(weight) || weight < 0) {
+        if (!Number.isFinite(days) || days < 0) {
             return;
         }
 
-        totalWeight += weight * quantity;
+        totalDays += days * quantity;
     });
 
-    return totalWeight;
+    return totalDays;
 };
 
 /**
- * Détermine le niveau de complexité du projet.
- *
- * @param {number} totalWeight Poids global.
- * @returns {Object} Niveau correspondant.
- */
-export const getLevel = (totalWeight) => {
-    const safeWeight = Number.isFinite(totalWeight)
-        ? Math.max(0, totalWeight)
-        : 0;
-
-    return (
-        LEVEL_THRESHOLDS.find(
-            (threshold) => safeWeight <= threshold.max
-        ) || LEVEL_THRESHOLDS[LEVEL_THRESHOLDS.length - 1]
-    );
-};
-
-/**
- * Génère les données du résumé du projet.
- *
- * Le délai express est affiché sans modifier le poids technique.
+ * Génère les données du résumé du projet : détail en jours/homme
+ * par poste, charge totale et prix estimé (charge × TJM du type
+ * de projet actif).
  *
  * @param {string} projectType Type de projet.
  * @param {Object[]} options Options sélectionnées.
  * @param {number} pages Nombre de pages.
  * @param {Object} projectTypes Configuration des projets.
  * @returns {{
- *   totalWeight: number,
- *   level: Object,
- *   lines: string[],
+ *   totalDays: number,
+ *   dailyRate: number,
+ *   totalPrice: number,
+ *   lines: {label: string, days: number}[],
  *   hasSelection: boolean
  * }}
  */
@@ -102,15 +83,19 @@ export const calculateProjectSummary = (
 
     if (!config) {
         return {
-            totalWeight: 0,
-            level: getLevel(0),
+            totalDays: 0,
+            dailyRate: 0,
+            totalPrice: 0,
             lines: [],
             hasSelection: false
         };
     }
 
     const lines = [
-        `${config.label} (base)`
+        {
+            label: `${config.label} (base)`,
+            days: config.baseWeight
+        }
     ];
 
     if (config.pages) {
@@ -126,9 +111,14 @@ export const calculateProjectSummary = (
         );
 
         if (extraPages > 0) {
-            lines.push(
-                `${safePages} pages au total (+${extraPages})`
-            );
+            const extraDays =
+                Math.ceil(extraPages / config.pages.step) *
+                config.pages.weightPerStep;
+
+            lines.push({
+                label: `${safePages} pages au total (+${extraPages})`,
+                days: extraDays
+            });
         }
     }
 
@@ -139,26 +129,28 @@ export const calculateProjectSummary = (
             1
         );
 
+        const days = Number(option.weight) * quantity;
         const label = String(option.label);
 
-        lines.push(
-            quantity > 1
-                ? `${label} ×${quantity}`
-                : label
-        );
+        lines.push({
+            label: quantity > 1 ? `${label} ×${quantity}` : label,
+            days
+        });
     });
 
-
-    const totalWeight = calculateProjectWeight(
+    const totalDays = calculateProjectDays(
         projectType,
         options,
         pages,
         projectTypes
     );
 
+    const dailyRate = Number(config.dailyRate) || 0;
+
     return {
-        totalWeight,
-        level: getLevel(totalWeight),
+        totalDays,
+        dailyRate,
+        totalPrice: totalDays * dailyRate,
         lines,
         hasSelection: options.length > 0 ||
             (config.pages && getSafeInteger(
