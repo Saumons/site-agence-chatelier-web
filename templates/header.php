@@ -16,7 +16,7 @@
 
 <body>
 <header class="header">
-    <a class="header__brand" href="#" aria-label="Chat'elier Web, accueil">
+    <a class="header__brand" href="accueil" aria-label="Chat'elier Web, accueil">
         <svg class="header__logo" viewBox="0 0 64.532997 90.939003" aria-hidden="true">
             <use href="assets/images/ChatelierLogoSeul.svg#layer1"></use>
         </svg>
@@ -33,10 +33,10 @@
                 <span></span><span></span><span></span>
             </label>
             <div class="header__pages">
-                <a href="#">Nos réalisations</a>
-                <a href="#">Nos services</a>
-                <a href="#">Nos engagements</a>
-                <a href="#" class="header__contact-menu">Contacter l'équipe</a>
+                <a href="nosRealisations">Nos réalisations</a>
+                <a href="nosServices">Nos services</a>
+                <a href="nosEngagements">Nos engagements</a>
+                <a href="contact" class="header__contact-menu">Contacter l'équipe</a>
             </div>
         </nav>
 
@@ -47,6 +47,6 @@
             </svg>
         </button>
 
-        <a href="#" class="header__contact">Ecrire a l'équipe</a>
+        <a href="contact" class="header__contact">Ecrire a l'équipe</a>
     </div>
 </header>
