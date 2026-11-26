@@ -11,12 +11,12 @@ require __DIR__ . '/../templates/header.php';
 // Types de projets proposés : utilisés pour l'affichage sans JS
 // (progressive enhancement) et pour la validation du paramètre ?tab=.
 // Les clés sont alignées avec devis.js et _devis.scss (BEM: quote__tab--<type>).
-$projectTypes = ['vitrine', 'ecommerce', 'webapp'];
+$projectTypes = ['vitrine', 'commerce', 'webApp'];
 
 $projectLabels = [
         'vitrine' => 'Site vitrine',
-        'ecommerce' => 'Site e-commerce',
-        'webapp' => 'Application web',
+        'commerce' => 'Site e-commerce',
+        'webApp' => 'Application web',
 ];
 
 $activeType = isset($_GET['tab']) && in_array($_GET['tab'], $projectTypes, true)
