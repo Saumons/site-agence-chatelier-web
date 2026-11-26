@@ -1,9 +1,9 @@
-
 /**
  * Configuration des types de projets.
  *
- * Chaque type définit son poids de base, ses éventuelles
- * règles de pagination et ses options spécifiques.
+ * Chaque type définit son poids de base (exprimé en jours/homme),
+ * son taux journalier moyen (TJM), ses éventuelles règles de
+ * pagination et ses options spécifiques.
  *
  * @type {Object}
  */
@@ -11,6 +11,7 @@ export const PROJECT_TYPES = {
     vitrine: {
         label: 'Site vitrine',
         baseWeight: 2,
+        dailyRate: 300,
         pages: {
             name: 'pages_count',
             included: 3,
@@ -39,6 +40,7 @@ export const PROJECT_TYPES = {
     ecommerce: {
         label: 'Site e-commerce',
         baseWeight: 5,
+        dailyRate: 320,
         options: [
             {
                 id: 'payment_method',
@@ -68,6 +70,7 @@ export const PROJECT_TYPES = {
     webapp: {
         label: 'Application web',
         baseWeight: 8,
+        dailyRate: 340,
         options: [
             {
                 id: 'business_module',
@@ -143,32 +146,6 @@ export const COMMON_OPTIONS = [
         id: 'user_doc',
         label: 'Documentation utilisateur illustrée',
         weight: 1
-    }
-];
-
-/**
- * Seuils de complexité.
- *
- * Le premier seuil supérieur ou égal au poids total
- * détermine le niveau de complexité.
- *
- * @type {Object[]}
- */
-export const LEVEL_THRESHOLDS = [
-    {
-        max: 5,
-        key: 'simple',
-        label: 'Simple'
-    },
-    {
-        max: 11,
-        key: 'standard',
-        label: 'Standard'
-    },
-    {
-        max: Infinity,
-        key: 'avance',
-        label: 'Avancé'
     }
 ];
 

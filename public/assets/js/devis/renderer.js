@@ -1,4 +1,3 @@
-
 import {
     dom,
     getPanel
@@ -11,6 +10,17 @@ import {
 } from './helper.js';
 
 import { CONTACT_TYPES } from './config.js';
+
+/**
+ * Formateur de prix (euros, sans décimales).
+ *
+ * @type {Intl.NumberFormat}
+ */
+const currencyFormatter = new Intl.NumberFormat('fr-FR', {
+    style: 'currency',
+    currency: 'EUR',
+    maximumFractionDigits: 0
+});
 
 /**
  * Construit le HTML d'une option sous forme d'éléments DOM.
@@ -199,16 +209,21 @@ export const renderTabs = (type) => {
 };
 
 /**
- * Affiche le résumé du projet.
+ * Affiche le résumé du projet : charge en jours/homme (totale et
+ * par poste) et prix estimé en euros.
  *
  * @param {Object} summary Données calculées du résumé.
  * @returns {void}
  */
 export const renderSummary = (summary) => {
-    if (dom.summaryLevel) {
-        dom.summaryLevel.textContent = summary.level.label;
+    if (dom.summaryDays) {
+        dom.summaryDays.textContent = `${summary.totalDays} j/h`;
+    }
 
-        dom.summaryLevel.dataset.level = summary.level.key;
+    if (dom.summaryPrice) {
+        dom.summaryPrice.textContent = currencyFormatter.format(
+            summary.totalPrice
+        );
     }
 
     if (!dom.summaryList) {
@@ -233,7 +248,7 @@ export const renderSummary = (summary) => {
 
     summary.lines.forEach((line) => {
         fragment.append(
-            createElement('li', {}, line)
+            createElement('li', {}, `${line.label} — ${line.days} j/h`)
         );
     });
 

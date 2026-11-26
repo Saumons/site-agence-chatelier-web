@@ -1,4 +1,3 @@
-
 import {
     PROJECT_TYPES,
     COMMON_OPTIONS,
@@ -109,8 +108,7 @@ const initQuoteSimulator = () => {
 
         return {
             options: checkedOptions,
-            pages: pagesInput?.value ?? config.pages?.included ?? 0,
-            urgent: Boolean(dom.urgentInput?.checked)
+            pages: pagesInput?.value ?? config.pages?.included ?? 0
         };
     };
 
