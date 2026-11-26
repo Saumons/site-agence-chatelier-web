@@ -84,7 +84,7 @@
             </h2>
 
             <ul class="footer__list">
-                <li class="footer__list-item"><a class="footer__list-link" href="accueil">Accueil</a></li>
+                <li class="footer__list-item"><a class="footer__list-link" href="index">Accueil</a></li>
                 <li class="footer__list-item"><a class="footer__list-link" href="nosEngagements">Engagement</a></li>
                 <li class="footer__list-item"><a class="footer__list-link" href="nosRealisations">Réalisations</a></li>
                 <li class="footer__list-item"><a class="footer__list-link" href="nosServices">Services</a></li>

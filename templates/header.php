@@ -16,7 +16,7 @@
 
 <body>
 <header class="header">
-    <a class="header__brand" href="accueil" aria-label="Chat'elier Web, accueil">
+    <a class="header__brand" href="index" aria-label="Chat'elier Web, accueil">
         <svg class="header__logo" viewBox="0 0 64.532997 90.939003" aria-hidden="true">
             <use href="assets/images/ChatelierLogoSeul.svg#layer1"></use>
         </svg>
