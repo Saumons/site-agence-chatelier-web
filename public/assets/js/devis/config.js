@@ -37,7 +37,7 @@ export const PROJECT_TYPES = {
         ]
     },
 
-    ecommerce: {
+    commerce: {
         label: 'Site e-commerce',
         baseWeight: 5,
         dailyRate: 320,
@@ -67,7 +67,7 @@ export const PROJECT_TYPES = {
         ]
     },
 
-    webapp: {
+    webApp: {
         label: 'Application web',
         baseWeight: 8,
         dailyRate: 340,
